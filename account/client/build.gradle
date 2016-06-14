@@ -1,0 +1,9 @@
+dependencies {
+    compile project(":common:restclient")
+    compile project(":account:datacontract")
+    compile project(":account:types")
+    compile "com.emc.caspian:component-registry-client:${project.ext.version.componentregistryclient}"
+
+    testCompile "junit:junit:${project.ext.version.junit}"
+    testCompile "org.slf4j:slf4j-log4j12:${project.ext.version.slf4j}"
+}

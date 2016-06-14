@@ -1,0 +1,95 @@
+group = 'com.emc.caspian.shared'
+version = baseVersion
+
+allprojects {
+    apply plugin: 'idea'
+    apply from: "${rootDir}/version.gradle"
+
+    repositories {
+        mavenCentral()
+        maven {
+            name "artifactory"
+            url artifactoryUrl
+        }
+    }
+
+    idea {
+        module {
+            //if for some reason you want to add an extra sourceDirs
+            sourceDirs += file('build/generated-sources')
+
+            excludeDirs -= file('build')
+            excludeDirs += file('build/classes')
+            excludeDirs += file('build/dependency-cache')
+            excludeDirs += file('build/libs')
+            excludeDirs += file('build/resources')
+            excludeDirs += file('build/tmp')
+            excludeDirs += file('build/reports')
+            excludeDirs += file('build/tmp')
+
+            //if you love browsing Javadoc
+            downloadJavadoc = true
+
+            //and hate reading sources :)
+            downloadSources = true
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+
+    configurations {
+        testCompile
+        compile
+    }
+
+    // list dependencies common across image repository service
+    dependencies {
+        compile ("com.emc.caspian.fabric:fabric-base:${project.ext.version.fabricBase}") {
+            exclude group:'org.apache.httpcomponents'
+            exclude group:'com.sun.jersey'
+            exclude group:'org.codehaus.jackson'
+            exclude group:'org.eclipse.jetty'
+            exclude group:'javax.ws.rs'
+            exclude group:'javax.servlet'
+            exclude group:'com.sun.jersey.contribs'
+        }
+        compile project(':common:utils')
+    }
+
+    version = baseVersion
+
+    jar {
+        manifest.attributes provider: 'EMC'
+    }
+    
+    // Configure any project with the application plugin
+    plugins.withType(ApplicationPlugin) {
+        applicationName = archivesBaseName
+        applicationDistribution.from('conf') {
+            into 'conf'
+        }
+        project.afterEvaluate {
+            installApp.with applicationDistribution
+        }
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name "artifactory"
+            url artifactoryUrl
+        }
+    }
+
+    dependencies {
+//        classpath "com.emc.vipr.platform:gradle-plugins:${gradlePluginsVersion}"
+//        classpath 'com.netflix.nebula:gradle-ospackage-plugin:1.12.7'
+        classpath 'org.jsonschema2pojo:jsonschema2pojo-gradle-plugin:0.4.7'
+    }
+}
+

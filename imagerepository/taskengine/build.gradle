@@ -1,0 +1,5 @@
+dependencies {
+    compile project(':imagerepository:registry')
+    compile project(':imagerepository:imageStore')
+ }
+

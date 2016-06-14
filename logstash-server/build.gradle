@@ -1,0 +1,8 @@
+apply plugin: 'docker'
+
+docker.images {
+    logstash {
+        imageName = "${ccslogstash}"
+        dir = project.file("src/main/docker")
+    }
+}

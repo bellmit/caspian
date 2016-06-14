@@ -1,0 +1,31 @@
+{
+  "express" :
+    {
+      "port" : ES_EXPORT_PORT
+    },
+  "elasticsearch" :
+    {
+       "url" : "http://127.0.0.1:ES_PORT/logstash-*/logs",
+       "port" : ES_PORT
+    },
+  "static_values" :
+    {
+      "elastic_index_store" :
+         {
+            "directory" : "ES_EXPORT_ARCHIVE_DIRECTORY"
+         },
+      "cache" :
+        {
+           "id_cache" :
+              {
+                  "persisting_file" : "local-store/.idcache_persistence_store"
+              }
+        },
+        "export_file_split" :
+          {
+            "no_lines" : ES_EXPORT_FILE_SPLIT_LINE_COUNT
+          },
+      "expirationjob_cron_timestamp" : "0 0 */5 * * *",
+      "cleanupjob_cron_timestamp" : "0 0 */7 * * *"
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "ESExportWrapper",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.x",
+    "nconf" : "0.7.x",
+    "elasticdump" : "0.15.x",
+    "uuid" : "x",
+    "request" : "2.64.0",
+    "sync-request" : "2.0.1",
+    "cron": "1.0.9"
+  }
+}

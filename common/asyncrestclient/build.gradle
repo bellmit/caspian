@@ -1,0 +1,10 @@
+apply plugin: 'maven-publish'
+archivesBaseName = 'asyncrest-client'
+
+dependencies {
+    compile "org.slf4j:slf4j-api:${project.ext.version.slf4j}",
+            "org.apache.httpcomponents:httpasyncclient:${project.ext.version.httpasynchclient}"
+    compile project(":common:clientcommon")
+
+    testCompile "junit:junit:${project.ext.version.junit}"
+}

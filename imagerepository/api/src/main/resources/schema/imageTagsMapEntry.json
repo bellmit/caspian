@@ -1,0 +1,27 @@
+{
+	"name": "imageTagsMapEntry",
+
+	"properties": 
+	{
+		"imageId": 
+		{
+				"type": "string",
+				"maxLength": 255
+		},
+			
+		"tags": 
+		{
+			"items": 
+	         {
+		         "type": "string",
+		          "maxLength": 255
+	         },
+		
+	         "type": "array",
+	         "description": "List of strings related to the image"
+		}
+	},
+						
+	"description": "Map entry of imageIds to list of tags associated with it"
+    	
+}

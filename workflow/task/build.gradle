@@ -1,0 +1,6 @@
+dependencies {
+    compile project(":workflow:types")
+    compile project(":account:model")
+    compile project(":keystone:client")
+    compile project(":account:client")
+}

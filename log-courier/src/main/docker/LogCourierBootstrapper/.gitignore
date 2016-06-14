@@ -1,0 +1,6 @@
+pkg/
+bin/
+.project
+.settings
+src/github.com
+src/golang.org

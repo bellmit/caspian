@@ -1,0 +1,27 @@
+apply plugin: 'maven-publish'
+
+dependencies {
+    compile "org.bouncycastle:bcpkix-jdk15on:${project.ext.version.bouncycastle}"
+    compile "commons-lang:commons-lang:${project.ext.version.commons}"
+    compile "joda-time:joda-time:${project.ext.version.jodatime}"
+    compile project(":keystone:model")
+    compile project(":common:restclient")
+    compile project(":keystone:common")
+
+    testCompile "junit:junit:${project.ext.version.junit}"
+    testCompile ("com.emc.caspian.fabric:fabric-base:${project.ext.version.fabricBase}") {
+        exclude group:'org.apache.httpcomponents'
+        exclude group:'com.sun.jersey'
+        exclude group:'org.codehaus.jackson'
+        exclude group:'org.eclipse.jetty'
+        exclude group:'javax.ws.rs'
+        exclude group:'javax.servlet'
+        exclude group:'com.sun.jersey.contribs'
+    }
+}
+
+// Should look into moving into an integration tests folder
+project.ext {
+     disableKeyStoneClientIntTest = true
+}
+test.onlyIf { !project.ext["disableKeyStoneClientIntTest"] }

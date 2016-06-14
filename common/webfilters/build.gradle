@@ -1,0 +1,7 @@
+apply plugin: 'maven-publish'
+
+dependencies {
+    compile project(':keystone:middleware')
+    
+    testCompile "junit:junit:${project.ext.version.junit}"
+}

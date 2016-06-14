@@ -1,0 +1,15 @@
+dependencies {
+    compile ("com.emc.caspian.fabric:fabric-base:${project.ext.version.fabricBase}") {
+        exclude group:'org.apache.httpcomponents'
+        exclude group:'org.eclipse.jetty'
+        exclude group:'javax.servlet'
+        exclude group:'javax.ws.rs'
+        exclude group:'com.sun.jersey'
+        exclude group:'com.sun.jersey.contribs'
+    }
+    compile "org.glassfish.jersey.media:jersey-media-json-jackson:${project.ext.version.jersey}"
+    compile "org.apache.commons:commons-lang3:${project.ext.version.commonslang}"
+    compile "commons-validator:commons-validator:${project.ext.version.commonsvalidator}"
+    
+    testCompile "junit:junit:${project.ext.version.junit}"
+}

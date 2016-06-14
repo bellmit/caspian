@@ -1,0 +1,8 @@
+apply plugin: 'docker'
+
+docker.images {
+    mysql {
+        imageName = "${ccsmysql}"
+        dir = project.file("src/main/docker")
+    }
+}

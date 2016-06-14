@@ -1,0 +1,61 @@
+apply plugin: 'java'
+apply plugin:'application'
+
+group = 'com.emc.caspian.ccs.db'
+archivesBaseName = 'db-controller'
+mainClassName = 'com.emc.caspian.ccs.db.Main'
+applicationDefaultJvmArgs = ["-Dlog4j.configuration=log4j.properties", "-Xms64m", "-Xmx128m"]
+
+description = """DB Controller"""
+
+dependencies {
+    compile project(':common:webfilters')
+    compile project(':common:utils')
+    compile "com.emc.caspian.encryption:encryption-java:${project.ext.version.encryptionjava}"
+    compile "org.apache.httpcomponents:httpasyncclient:${project.ext.version.httpasynchclient}", 
+            "org.apache.httpcomponents:httpclient:${project.ext.version.httpclient}",
+            "com.google.guava:guava:${project.ext.version.guava}",
+            "javax.xml:jaxb-api:${project.ext.version.jaxbapi}",
+            "log4j:log4j:${project.ext.version.log4j}",
+            "org.slf4j:slf4j-api:${project.ext.version.slf4japi}",
+            "org.codehaus.jackson:jackson-mapper-asl:${project.ext.version.jacksonmapperasl}",
+            "org.eclipse.jetty:jetty-server:${project.ext.version.jetty}",
+            "org.eclipse.jetty:jetty-servlet:${project.ext.version.jetty}",
+            "org.glassfish.jersey.core:jersey-server:${project.ext.version.jersey}",
+            "org.glassfish.jersey.core:jersey-client:${project.ext.version.jersey}",
+            "org.glassfish.jersey.containers:jersey-container-servlet-core:${project.ext.version.jersey}",
+            "org.glassfish.jersey.containers:jersey-container-jetty-http:${project.ext.version.jersey}",
+            "org.jdbi:jdbi:${project.ext.version.jdbi}",
+            "org.apache.commons:commons-dbcp2:${project.ext.version.dbcp2}",
+            "mysql:mysql-connector-java:${project.ext.version.mysqlconnector}",
+            "com.emc.caspian:component-registry-client:${project.ext.version.componentregistryclient}"
+    compile("com.googlecode.json-simple:json-simple:${project.ext.version.jsonsimple}") {
+        exclude group:'junit'
+    }
+            
+    testCompile "junit:junit:${project.ext.version.junit}"
+    testCompile "commons-io:commons-io:${project.ext.version.commonsio}"
+}
+
+// Configure any project with the application plugin
+plugins.withType(ApplicationPlugin) {
+    applicationDistribution.from('conf') {
+        into 'conf'
+    }
+    applicationDistribution.from('src/main/resources') {
+        into 'resources'
+    }
+    project.afterEvaluate {
+        installApp.with applicationDistribution
+    }
+}    
+    
+apply plugin: 'docker'
+
+docker.images {
+    dbController {
+        imageName = "${ccsdb_controller}"
+        dir = project.projectDir
+    }
+}
+buildDbControllerImage.dependsOn { installApp }

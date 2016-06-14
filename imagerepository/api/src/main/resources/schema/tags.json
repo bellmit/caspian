@@ -1,0 +1,48 @@
+{
+	"name": "tags",
+	"links": 
+	[
+		{
+			"href": "{first}",
+			"rel": "first"
+		},
+
+		{
+			"href": "{next}",
+			"rel": "next"
+		},
+
+		{
+			"href": "{schema}",
+			"rel": "describedby"
+		}
+	],
+
+	"properties": 
+	{
+		"next": 
+		{
+			"type": "string"
+		},
+
+		"schema": 
+		{
+			"type": "string"
+		},
+
+		"first": 
+		{
+			"type": "string"
+		},
+
+		"tags": 
+		{
+			"items": 
+			{
+				"$ref": "tag.json"
+			},
+
+			"type": "array"
+		}
+	}
+}

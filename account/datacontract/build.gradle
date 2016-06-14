@@ -1,0 +1,7 @@
+dependencies {
+    compile project(':account:types')
+    compile project(':common:utils')
+    compile "commons-lang:commons-lang:${project.ext.version.commons}" 
+    
+    testCompile "junit:junit:${project.ext.version.junit}"
+}

@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':common:webfilters')
+    compile project(':account:model')
+    
+    testCompile "junit:junit:${project.ext.version.junit}"
+}

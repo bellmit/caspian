@@ -1,0 +1,647 @@
+{
+  "template_1": {
+    "template": "logstash-*",
+    "mappings": {
+      "_default_": {
+        "dynamic_templates": [
+          {
+            "message_field": {
+              "mapping": {
+                "index": "not_analyzed",
+                "omit_norms": true,
+                "type": "string"
+              },
+              "match": "message",
+              "match_mapping_type": "string"
+            }
+          },
+          {
+            "string_fields": {
+              "mapping": {
+                "index": "analyzed",
+                "omit_norms": true,
+                "type": "string",
+                "fields": {
+                  "raw": {
+                    "ignore_above": 256,
+                    "index": "not_analyzed",
+                    "type": "string"
+                  }
+                }
+              },
+              "match": "*",
+              "match_mapping_type": "string"
+            }
+          }
+        ],
+        "_all": {
+          "enabled": true,
+          "omit_norms": true
+        },
+        "properties": {
+          "@version": {
+            "type": "string",
+            "index": "not_analyzed"
+          },
+          "geoip": {
+            "dynamic": "true",
+            "properties": {
+              "location": {
+                "type": "geo_point"
+              }
+            }
+          }
+        }
+      },
+      "logs": {
+        "dynamic_templates": [
+          {
+            "message_field": {
+              "mapping": {
+                "index": "not_analyzed",
+                "ignore_above": 256,
+                "omit_norms": true,
+                "type": "string"
+              },
+              "match": "message",
+              "match_mapping_type": "string"
+            }
+          },
+          {
+            "string_fields": {
+              "mapping": {
+                "index": "analyzed",
+                "omit_norms": true,
+                "type": "string",
+                "fields": {
+                  "raw": {
+                    "ignore_above": 256,
+                    "index": "not_analyzed",
+                    "type": "string"
+                  }
+                }
+              },
+              "match": "*",
+              "match_mapping_type": "string"
+            }
+          }
+        ],
+        "_all": {
+          "enabled": true,
+          "omit_norms": true
+        },
+        "properties": {
+          "@timestamp": {
+            "type": "date",
+            "format": "dateOptionalTime"
+          },
+          "@version": {
+            "type": "string",
+            "index": "not_analyzed"
+          },
+          "ID" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "NDC": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "PID": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "action": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "actionDescription": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "agent": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "auth": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "bytes": {
+            "type": "long",
+            "norms": {
+              "enabled": false
+            }
+          },
+          "category": {
+            "type": "string",
+            "index": "not_analyzed",
+            "ignore_above": 256,
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "className": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "clientip": {
+            "type": "ip",
+            "norms": {
+              "enabled": false
+            }
+          },
+          "device": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "devtype": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "eventName" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "geoip": {
+            "dynamic": "true",
+            "properties": {
+              "location": {
+                "type": "geo_point"
+              }
+            }
+          },
+          "host": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "hostname": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "httpversion": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "ident": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "len" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "lineNumber": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "message": {
+            "type": "string",
+            "index": "not_analyzed",
+            "ignore_above": 1024,
+            "norms": {
+              "enabled": false
+            }
+          },
+          "messageField": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "messagePayload" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fields" : {
+              "raw" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "ignore_above" : 1024
+              }
+            }
+          },
+          "moduleName": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "offset": {
+            "type": "long"
+          },
+          "packageName": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "part": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "parttype": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "path": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "program": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "referrer": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "request": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "requestId": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "response": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "responseTime": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "serviceName" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "severity": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "source" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "status" : {
+            "type" : "string",
+            "norms" : {
+              "enabled" : false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "tags": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "thread": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "timeElapsed": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          },
+          "verb": {
+            "type": "string",
+            "norms": {
+              "enabled": false
+            },
+            "fields": {
+              "raw": {
+                "type": "string",
+                "index": "not_analyzed",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

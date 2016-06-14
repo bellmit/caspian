@@ -1,0 +1,10 @@
+apply plugin: 'maven-publish'
+
+dependencies {
+    compile project(':keystone:client')
+    compile "org.slf4j:slf4j-api:${project.ext.version.slf4j}",
+            "org.bouncycastle:bcpkix-jdk15on:${project.ext.version.bouncycastle}",
+            "com.google.guava:guava:${project.ext.version.guava}"
+
+    testCompile "junit:junit:${project.ext.version.junit}"
+}

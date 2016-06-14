@@ -1,0 +1,28 @@
+{
+	"name": "tasks",
+	"links": 
+	[
+		{
+			"href": "{schema}",
+			"rel": "describedby"
+		}
+	],
+
+	"properties": 
+	{
+		"tasks": 
+		{
+			"items": 
+			{
+				"$ref": "task.json"
+			},
+
+			"type": "array"
+		},
+
+		"schema": 
+		{
+			"type": "string"
+		}
+	}
+}

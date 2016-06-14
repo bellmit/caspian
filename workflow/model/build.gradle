@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':workflow:types')
+    compile project(':common:utils')
+}

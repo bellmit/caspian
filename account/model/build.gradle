@@ -1,0 +1,17 @@
+dependencies {
+    compile "org.jdbi:jdbi:${project.ext.version.jdbi}"
+    compile project(':account:util')
+    compile project(':common:utils')
+    compile project(':account:types')
+
+    testCompile "junit:junit:${project.ext.version.junit}"
+    testCompile "org.easymock:easymock:${project.ext.version.easymock}"
+    testCompile "org.powermock:powermock-api-easymock:${project.ext.version.powermockapieasymock}"
+    testCompile "org.powermock:powermock-api-mockito:${project.ext.version.powermockapimockito}"
+    testCompile "org.powermock:powermock-api-support:${project.ext.version.powermockapisupport}"
+    testCompile "org.powermock:powermock-core:${project.ext.version.powermockcore}"
+    testCompile "org.powermock:powermock-reflect:${project.ext.version.powermockreflect}"
+    testCompile "org.hsqldb:hsqldb:${project.ext.version.hsqldb}"
+    testCompile "org.powermock:powermock-module-junit4-common:${project.ext.version.powermockmodulejunit4common}"
+    testCompile "org.powermock:powermock-module-junit4:${project.ext.version.powermockmodulejunit4}"
+}

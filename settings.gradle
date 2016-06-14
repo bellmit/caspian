@@ -1,0 +1,49 @@
+include "db"
+include "identity"
+
+include "common"
+include "common:utils"
+include "common:webfilters"
+include "common:restclient"
+include "common:asyncrestclient"
+include "common:clientcommon"
+
+
+include "keystone"
+include "keystone:model"
+include "keystone:middleware"
+include "keystone:client"
+include "keystone:asyncclient"
+include "keystone:common"
+
+include "account"
+include "account:api"
+include "account:authorization"
+include "account:model"
+include "account:datacontract"
+include "account:util"
+include "account:server"
+include "account:types"
+include "account:client"
+
+include "kibana"
+include "elasticsearch-server"
+include "log-courier"
+include "logstash-server"
+
+include "workflow"
+include "workflow:types"
+include "workflow:model"
+include "workflow:task"
+include "workflow:worker"
+
+include "license"
+include "db_controller"
+
+include "esrs"
+include "esrs:api"
+include "esrs:server"
+include "esrs:model"
+
+include "etcd"
+include "common-db"

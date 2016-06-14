@@ -1,0 +1,5 @@
+dependencies {
+    compile project(':account:authorization')
+    
+    testCompile "junit:junit:${project.ext.version.junit}"
+}

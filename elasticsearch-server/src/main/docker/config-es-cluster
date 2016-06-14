@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#configure elasticsearch.yml for clustering
+echo 'discovery.zen.ping.unicast.hosts: [ELASTICSEARCH_IPS] ' >> ${ES_CONFIG_PATH}/elasticsearch.yml
+echo "discovery.zen.minimum_master_nodes: 1" >> ${ES_CONFIG_PATH}/elasticsearch.yml
+

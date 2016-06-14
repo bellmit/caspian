@@ -1,0 +1,21 @@
+apply plugin: 'application'
+mainClassName = 'com.emc.caspian.ccs.workflow.worker.Worker'
+applicationDefaultJvmArgs = [ "-Xms256m", "-Xmx2048m" ]
+
+dependencies {
+    compile project(':workflow:model')
+    compile project(':workflow:task')
+}
+
+task copyToLib(type: Copy) {
+    into "$buildDir/dist/libs"
+    from configurations.runtime
+}
+
+// Currently worker runs inside account's docker container. Empty section required to resolve docker task dependencies
+task docker << {
+}
+
+build.dependsOn(copyToLib)
+build.dependsOn(startScripts)
+docker.dependsOn(build)

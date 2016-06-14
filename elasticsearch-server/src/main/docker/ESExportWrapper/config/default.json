@@ -1,0 +1,10 @@
+{
+  "application" : 
+     {
+        "name" : "ESExportWrapper"
+     },
+  "environment" : 
+    {
+       "container_host_address" : "CONTAINER_HOST_ADDRESS"
+    } 
+}

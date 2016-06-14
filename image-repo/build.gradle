@@ -1,0 +1,6 @@
+task docker << {
+   command->exec {
+            commandLine "/bin/bash", "-c", "docker build -q -t $ccsgroup/$ccsimagerepo:$version ./src/main/docker && docker tag -f $ccsgroup/$ccsimagerepo:$version $ccsgroup/$ccsimagerepo:latest"
+   }
+}
+

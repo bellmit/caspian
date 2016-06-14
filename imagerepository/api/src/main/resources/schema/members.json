@@ -1,0 +1,28 @@
+{
+	"name": "members",
+	"links": 
+	[
+		{
+			"href": "{schema}",
+			"rel": "describedby"
+		}
+	],
+
+	"properties": 
+	{
+		"members": 
+		{
+			"items": 
+			{
+				"$ref": "member.json"
+			},
+
+			"type": "array"
+		},
+
+		"schema": 
+		{
+			"type": "string"
+		}
+	}
+}

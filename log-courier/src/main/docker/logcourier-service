@@ -1,0 +1,71 @@
+#!/bin/bash
+#
+# description: log-courier server
+#
+# Start the logcourier service
+BASE_PATH_TO_SERVICE=LOG_COURIER_BASE_PATH
+PATH_TO_SERVICE=$BASE_PATH_TO_SERVICE/bin/log-courier
+PATH_TO_LCADMIN=$BASE_PATH_TO_SERVICE/bin/lc-admin
+PATH_TO_CONFIG=$BASE_PATH_TO_SERVICE/log-courier.conf
+SERVICE_NAME=log-courier
+
+#start the log-courier service
+start() {
+        #bash -C  "echo -n Starting FOO server: "
+        PID=$(pidof $PATH_TO_SERVICE )
+        if [ ! -z "$PID" -a "$PID"!=" " ]; then
+           echo "${SERVICE_NAME} service is already running {pid:${PID}}"
+        else
+           $PATH_TO_SERVICE -config $PATH_TO_CONFIG -from-beginning &
+        fi
+        echo
+}
+# stop the log-courier service
+stop() {
+        #initlog -c "echo -n Stopping FOO server: "
+        PID=$(pidof $PATH_TO_SERVICE)
+        kill -9 $PID
+}
+
+# running status of the log-courier service
+status() {
+        PID=$(pidof $PATH_TO_SERVICE)
+        if [ ! -z "$PID" -a "$PID"!=" " ]; then
+           echo "$1 service is Running with PID:${PID}";
+        else
+           echo "$1 service is not running";
+        fi
+}
+
+reload() {
+        PID=$(pidof $PATH_TO_SERVICE)
+        if [ ! -z "$PID" -a "$PID"!=" " ]; then
+           $PATH_TO_LCADMIN reload
+        else
+           $PATH_TO_SERVICE &
+        fi
+}
+### main logic ###
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  status)
+        status ${SERVICE_NAME}
+        ;;
+  restart|condrestart)
+        stop
+        start
+        ;;
+  reload)
+       reload
+       ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart|reload|status}"
+        exit 1
+esac
+exit 0
+       

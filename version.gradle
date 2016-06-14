@@ -1,0 +1,85 @@
+project.ext.version= [
+
+   fabricBase:"1.1.0.0.1626.9f79aa0",
+
+   jersey:"2.16",
+   jetty:"9.2.9.v20150224",
+
+   antlr:"4.3",
+   componentregistryclient:"1.1.0.0-3507.6592e92",
+   encryptionjava:"1.0.0.1.2394.fb26b55",
+
+   //apache
+   beanutils:"1.9.2",
+   commonslang:"3.0",
+   httpasynchclient:"4.0.2",
+   commonsvalidator:"1.4.1",
+   commonsio:"2.4",
+   httpclient:"4.4",
+   httpmime:"4.4",
+   commonsfileupload:"1.3.1",
+
+   //json
+   jackson:"2.2.3",
+   jacksonmapperasl:"1.9.13",
+   jsonsimple:"1.1.1",
+   jsonpatch:"1.9",
+   jsonlib:"2.4",
+   xom:"1.2.5",
+
+   //encryption
+   bouncycastle:"1.52",
+
+   guava:"18.0",
+
+   //DB/Store related
+   jdbi:"2.59",
+   dbcp2:"2.1", //database connection pooling
+   pool2:"2.3", //required for dbcp2
+   dbutils:"1.6", // dbutils in conjunction with dbcp2
+   mysqlconnector:"5.1.6",
+   jdbi:"2.59",
+   
+   //logging related
+   log4j:"1.2.16",
+   slf4j:"1.6.4",
+   slf4japi:"1.7.12",
+   
+   //joda time
+   jodatime:"2.2",
+   
+   //joda time
+   commons:"2.6",
+   
+   //testing jar versions
+   junit:"4.11",
+   mockito:"1.10.19",
+   jsonpatch:"1.9",
+   hsqldb:"2.3.3",
+   powermockapieasymock:"1.6.2",
+   powermockapimockito:"1.4.9",
+   powermockapisupport:"1.4.9",
+   powermockcore:"1.6.2",
+   powermockreflect:"1.4.7",
+   cglib:"2.2.2",
+   powermockmodulejunit4common:"1.5",
+   powermockmodulejunit4:"1.4.6",
+   easymock:"3.0",
+   ldap:"3.1.1",
+
+   //reflection
+   reflection:"0.9.9-RC1",
+   
+   //jax-rs
+   jaxrs:"2.0.1",
+   jaxbapi:"2.1",
+
+   //javax
+   servletapi:"3.1.0",
+
+   //EMC CLP
+   elmjava:"3.3.0",
+   flexlm:"11.11.1",
+   eccpressoall:"11.11.1",
+ ]
+

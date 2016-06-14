@@ -1,0 +1,31 @@
+subprojects {
+    apply plugin: 'java'
+
+    // list dependencies common across esrs service
+    dependencies {
+        compile project(':common:utils')
+        compile "org.apache.httpcomponents:httpasyncclient:${project.ext.version.httpasynchclient}"
+        compile "org.apache.httpcomponents:httpclient:${project.ext.version.httpclient}"
+        compile "org.apache.httpcomponents:httpmime:${project.ext.version.httpmime}"
+        compile "commons-fileupload:commons-fileupload:${project.ext.version.commonsfileupload}"
+        compile "commons-io:commons-io:${project.ext.version.commonsio}"
+        compile "javax.servlet:javax.servlet-api:${project.ext.version.servletapi}"
+        compile "net.sf.json-lib:json-lib:${project.ext.version.jsonlib}:jdk15"
+        compile "xom:xom:${project.ext.version.xom}"
+        testCompile "junit:junit:${project.ext.version.junit}"
+        testCompile "org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-jetty:${project.ext.version.jersey}"
+        testCompile "org.mockito:mockito-all:${project.ext.version.mockito}"
+        testCompile "org.apache.httpcomponents:httpclient:${project.ext.version.httpclient}"
+        testCompile "org.glassfish.jersey.connectors:jersey-apache-connector:${project.ext.version.jersey}"
+    }
+    
+    // Configure any project with the application plugin
+    plugins.withType(ApplicationPlugin) {
+        applicationDistribution.from('conf') {
+            into 'conf'
+        }
+        project.afterEvaluate {
+            installApp.with applicationDistribution
+        }
+    }
+}

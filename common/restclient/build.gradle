@@ -1,0 +1,11 @@
+apply plugin: 'maven-publish'
+archivesBaseName = 'rest-client'
+
+dependencies {
+    compile "org.slf4j:slf4j-api:${project.ext.version.slf4j}",
+            "org.glassfish.jersey.core:jersey-client:${project.ext.version.jersey}",
+            "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:${project.ext.version.jackson}"
+    compile project(":common:clientcommon")
+
+    testCompile "junit:junit:${project.ext.version.junit}"
+}

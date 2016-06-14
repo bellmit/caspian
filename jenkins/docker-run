@@ -1,0 +1,40 @@
+#!/bin/sh
+# Helper script for running something within a docker container
+
+ARGS=${ARGS:---rm}
+WORKING=${WORKING:-/working}
+CONTAINER_USER=${CONTAINER_USER:-build}
+CONTAINER_GROUP=${CONTAINER_GROUP:-build}
+CONTAINER_USER_ID=${CONTAINER_USER_ID:-$(id -u)}
+CONTAINER_GROUP_ID=${CONTAINER_GROUP_ID:-$(id -g)}
+DOCKER_GROUP=dockergrp
+DOCKER_GROUP_ID=$(grep ^docker\: /etc/group |cut -d: -f3)
+
+ADD_GROUP="groupadd -o -g ${CONTAINER_GROUP_ID} ${CONTAINER_GROUP}"
+ADD_DOCKER_GROUP="groupadd -o -g ${DOCKER_GROUP_ID} ${DOCKER_GROUP}"
+ADD_USER="useradd -o -u ${CONTAINER_USER_ID} -g ${CONTAINER_GROUP} -G ${DOCKER_GROUP} -d ${WORKING} -M ${CONTAINER_USER}"
+RUN_AS_USER="${ADD_GROUP} && ${ADD_DOCKER_GROUP} && ${ADD_USER} && su - ${CONTAINER_USER} -c "
+
+IMAGE=$1
+shift
+COMMAND="$@"
+
+if [ -z "$IMAGE" ] || [ -z "${COMMAND}" ]; then
+    echo "Usage: $0 <image> <command>"
+    exit 1
+fi
+
+if [ ! -z "${NAME}" ]; then
+    set +e
+    docker rm -f ${NAME} > /dev/null 2>&1
+    ARGS="--name=${NAME} ${ARGS}"
+fi
+
+set -ex
+docker run -t ${ARGS} \
+    -v "$(pwd):${WORKING}" \
+    -w "${WORKING}" \
+    --entrypoint=/bin/bash \
+    ${IMAGE} \
+    -c "${RUN_AS_USER} \"${COMMAND}\""
+

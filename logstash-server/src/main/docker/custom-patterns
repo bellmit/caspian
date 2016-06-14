@@ -1,0 +1,255 @@
+#
+# Copyright (c) 2015 EMC Corporation
+# All Rights Reserved
+#
+# This software contains the intellectual property of EMC Corporation
+# or is licensed to EMC Corporation from third parties.  Use of this
+# software and the intellectual property contained therein is expressly
+# limited to the terms and conditions of the License Agreement under which
+# it is provided by or on behalf of EMC.
+#
+
+
+# NOTES
+
+# Log files using apache format aren't mentioned here. Directly using COMBINEDAPACHELOG.
+
+#--------------------------------------------------------------------------#
+
+# KEYSTONE
+
+KEYSTONE_MAIN_ADMIN1 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{USERNAME:packageName}\s*%{GREEDYDATA:messagePayload}
+KEYSTONE_MAIN_ADMIN2 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{USERNAME:packageName}\s*%{GREEDYDATA:messagePayload}
+KEYSTONE_APACHEERROR (?m)\[%{DAY}\s*%{MONTH:month}\s*%{MONTHDAY:monthDay}\s*%{TIME:time}\s*%{YEAR:year}\]\s*\[%{WORD:serviceName}\:%{LOGLEVEL_CUSTOM:severity}\]\s*\[pid\s*%{NONNEGINT:PID}\]\s*%{GREEDYDATA:messagePayload}
+KEYSTONE_IDPMONITOR (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{USERNAME:moduleName}\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# CASPIAN COMPUTE
+
+RABBITMQ_HOSTNAMELOG (?m)=%{LOGLEVEL_CUSTOM:severity}\s*REPORT==== %{MONTHDAY:monthDay}-%{MONTH:month}-%{YEAR:year}::%{TIME:time}\s*%{GREEDYDATA:messagePayload}
+RABBITMQ_SUPERVISOR (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+C3_ERROR (?m)\[%{TIMESTAMP_ISO8601:timestamp}%{GREEDYDATA}\]\s*\[%{NONNEGINT}\]\s*\[%{LOGLEVEL_CUSTOM:severity}\]\s*%{GREEDYDATA:messagePayload}
+
+# NOVA
+
+NOVA_API (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{DATA:className}\s*\[%{DATA:requestId} %{WORD}.*\]\s*%{GREEDYDATA}\s*status: %{NONNEGINT:status}\s*len: %{NONNEGINT:len}\s*time: %{NUMBER:time}\s*%{GREEDYDATA:messagePayload}
+NOVA_CERT (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{DATA:className}\s*\[%{DATA:requestId}\]\s*%{GREEDYDATA:messagePayload}
+NOVA_CONDUCTOR_CONSOLEAUTH_NOVNCPROXY_SCHEDULER (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{WORD:severity}\s*%{DATA:className}\s*\[%{DATA:requestId}\]\s*%{GREEDYDATA:messagePayload}
+NOVA_COMPUTE6 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{WORD:severity}\s*%{DATA:className}\s*\[%{DATA:requestId}\s*\]\s*\[instance:\s%{DATA:instanceID}\]\s*%{GREEDYDATA:messagePayload}
+NOVA_CONDUCTOR_CONSOLEAUTH_MANAGE_NOVNCPROXY_SCHEDULER_COMPUTE1 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{WORD:severity}\s*%{DATA:className}\s*\[%{DATA:requestId}\s*\]\s*%{GREEDYDATA:messagePayload}
+NOVA_COMPUTE2 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{DATA:className}\s*\[instance:\s%{DATA:instanceID}\]\s*%{GREEDYDATA:messagePayload}
+NOVA_COMPUTE3 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{WORD:severity}\s*%{DATA:className}\s*\[%{DATA:requestId}\s*\]\s*\[instance:\s%{DATA:instanceID}\]\s*%{GREEDYDATA:messagePayload}
+NOVA_COMPUTE4 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*\|\s*%{NONNEGINT:lineNumber}\s*\|\s*%{DATA:moduleName}\s*\|\s*%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+NOVA_COMPUTE5 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{GREEDYDATA:messagePayload}
+NOVA_SUPERVISORD (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+
+# CINDER
+CINDER_API_MANAGE_SCHEDULER_VOLUME (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{WORD:severity}\s*%{USERNAME:className}\s*\[-\]\s*%{GREEDYDATA:messagePayload}
+CINDER_SUPERVISORD (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+
+# GLANCE
+GLANCE_API_REGISTRY (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{WORD:severity}\s*%{USERNAME:className}\s*%{GREEDYDATA:messagePayload}
+
+# HEAT
+HEAT_CFN_CLOUDWATCH_MANAGE_ENGINE (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{WORD:severity}\s*%{USERNAME:className}\s*%{GREEDYDATA:messagePayload}
+HEAT_SUPERVISORD (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+
+# NEUTRON
+NEUTRON_SERVER_DHCPAGENT_L3AGENT_LBAASAGENT_METADATAAGENT_OPENVSWITCHAGENT (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{WORD:severity}\s*%{USERNAME:className}\s*%{GREEDYDATA:messagePayload}
+NEUTRON_VSWITCHD %{TIMESTAMP_ISO8601:timestamp}\|%{INT}\|%{USERNAME}\|%{LOGLEVEL_CUSTOM:severity}\|\s*%{GREEDYDATA:messagePayload}
+NEUTRON_WSGI_HTTP_API_1 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{DATA:className}\s*\[%{DATA:requestId} %{WORD}.*\]\s*%{GREEDYDATA}\s*device_id=%{NOTSPACE:deviceid}\s*%{GREEDYDATA}\s*"\s*%{NONNEGINT:status}\s*%{NONNEGINT:len}\s*%{NUMBER:time}
+NEUTRON_WSGI_HTTP_API_2 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{DATA:className}\s*\[%{DATA:requestId} %{WORD}.*\]\s*%{GREEDYDATA}\s*\?device_id=%{NOTSPACE:deviceid}\s*%{GREEDYDATA}\s*"\s*%{NONNEGINT:status}\s*%{NONNEGINT:len}\s*%{NUMBER:time}
+
+# CEILOMETER
+CEILOMETER_NOTIFICATION_NOTIFIER_API_COLLECTOR_DBSYNC (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{WORD:severity}\s*%{USERNAME:moduleName}\s*\[-\]\s*%{GREEDYDATA:messagePayload}
+
+# HORIZON
+HORIZON_ERROR (?m)\[%{DAY} %{MONTH:month} %{MONTHDAY:monthDay} %{TIME:time} %{YEAR:year}\]\s*\[%{USERNAME:className}:%{LOGLEVEL_CUSTOM:severity}\]\s*\[pid\s*%{NONNEGINT:PID}\]\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# MYSQL - includes all kinds of log formats given my mysql.                
+# Newer ones to be added above these in logstash.conf so as to be executed first
+
+MYSQL1 (?m)%{NUMBER:date}\s*%{TIME:time}\s*%{NUMBER:id}\s*%{WORD:command}\s*%{GREEDYDATA:argument}\s*%{GREEDYDATA:messagePayload}
+MYSQL2 (?m)%{NUMBER:date}\s*%{TIME:time}\s*%{WORD:className}\s*%{GREEDYDATA:messagePayload}
+MYSQL3 (?m)%{NUMBER:date}\s*%{TIME:time}\s*\[%{WORD:severity}\]\s*%{GREEDYDATA:messagePayload}
+MYSQL4 (?m)%{NUMBER:date}\s*%{TIME:time}\s*\[%{LOGLEVEL_CUSTOM:severity}\]\s*IP address \'%{IP:clientIP}\'\s*%{GREEDYDATA:messagePayload}
+MYSQL5 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# ACCOUNT
+
+ACCOUNT_SERVICE (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT:timeElapsed}\s*%{LOGLEVEL_CUSTOM:severity}\s*\[%{DATA:thread}\]\s*%{USERNAME:className}\s%{WORD:NDC}\s*-\s*%{DATA:taskID}\s*%{GREEDYDATA:messagePayload}
+ACCOUNT_ACCESS (?m)%{IP:clientip}\s*%{USER:ident}\s*%{USER:auth}\s*\[%{HTTPDATE:timestamp}\] "(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion})?|%{DATA:rawrequest})" %{NUMBER:response} (?:%{NUMBER:bytes:int}|-) %{QS:referrer} %{QS:agent} %{NUMBER:responseTime}
+ACCOUNT_WORKER (?m)%{TIMESTAMP_ISO8601:timestamp}\{%{WORD}\}\s*%{NONNEGINT:timeElapsed}\s*%{LOGLEVEL_CUSTOM:severity}\s*\[%{DATA:threadName}\]\s*%{USERNAME:className}\s*-\s%{DATA:threadID}\s%{DATA:trackingID}\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# SCALEIO
+
+# SDS, MDM, TB
+SDS__MDM_TRC__TB1 (?m)%{MONTHDAY:monthDay}/%{MONTHNUM:monthNum}\s*%{TIME:time}\s*%{GREEDYDATA:action}:%{NUMBER:lineNumber}:\s*%{GREEDYDATA:messagePayload}
+TB2 (?m)%{MONTHDAY:monthDay}/%{MONTHNUM:monthNum}\s*%{TIME:time}\s*%{GREEDYDATA:messagePayload}
+MDM_EVENTLOG (?m)%{INT:ID}\s*%{TIMESTAMP_ISO8601:timestamp}\s*%{USERNAME:eventName}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+
+# GATEWAY
+GATEWAY_SCALEIO_OPERATIONS_API (?m)%{TIMESTAMP_ISO8601:timestamp}\s*\[%{DATA:thread}\]\s*%{LOGLEVEL_CUSTOM:severity}\s*%{USERNAME:className}\s*-\s*%{GREEDYDATA:messagePayload}
+GATEWAY_ACCESS (?m)%{IP:clientip} %{USER:ident} %{USER:auth} \[%{MONTHDAY:monthDay}/%{MONTHNUM:monthNum}/%{YEAR:year}:%{TIME:time} %{INT}\] "(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion})?|%{DATA:rawrequest})" %{NUMBER:response} (?:%{NUMBER:bytes:int}|-)
+
+# SDC - Syslog Format
+
+# CONTROLLER
+SCALEIO_CONTROLLER (?m)%{LOGLEVEL_CUSTOM:severity}\s*\[%{TIMESTAMP_ISO8601:timestamp}\]\s*%{USERNAME:className}\s*:\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# PLATFORM SERVICE
+
+PLATFORM_CONTROLLER (?m)%{LOGLEVEL_CUSTOM:severity}\s*\[%{TIMESTAMP_ISO8601:timestamp}\]\s*%{USERNAME:className}\s*:\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# CASPIAN UI AND LOADBALANCER
+
+APPLICATION1 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*-\s*\[%{LOGLEVEL_CUSTOM:severity}\]\s*-.\s*%{GREEDYDATA:messagePayload}
+APPLICATION2 (?m)Client: %{TIMESTAMP_ISO8601:timestamp}\s*-\s*%{USERNAME:className}\s*%{GREEDYDATA:messagePayload}
+NGINX_ERROR (?m)%{TIMESTAMP_ISO8601_MODIFIED:timestamp}\s*\[%{LOGLEVEL_CUSTOM:severity}\]\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# SYSTEM LOGS
+
+# SYSLOGx are various observed patterns in /var/log/messages. Newer ones to be added above these in logstash.conf so as to be executed first
+SYSLOG1 (?m)%{SYSLOGTIMESTAMP:timestamp} %{SYSLOGHOST:hostname} %{DATA:program}(?:\[%{POSINT:PID}\])?:\s*%{GREEDYDATA:messagePayload}
+SYSLOG2 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{SYSLOGHOST:hostname} %{DATA:program}(?:\[%{POSINT:PID}\])?:\s*%{GREEDYDATA:messagePayload}
+SYSLOG3 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{GREEDYDATA:messagePayload}
+SYSLOG4 (?m)%{SYSLOGTIMESTAMP:timestamp}\s*%{GREEDYDATA:messagePayload}
+
+# For ecs-nsm.log showing up in system logs (at /var/log/vipr/ecs-nsm.log)
+SYSLOG_ECS (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{LOGLEVEL_CUSTOM:severity}\s*\[%{USERNAME:thread}\]\s*%{USERNAME:className}\s*\(line\s%{INT:lineNumber}\)\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# ELK STACK
+
+# ELASTICSEARCH
+ELASTICSEARCH (?m)\[%{TIMESTAMP_ISO8601:timestamp}\]\[%{DATA:severity}\s*\]\[%{DATA:source}\s*\]\s*%{GREEDYDATA:messagePayload}
+ELASTICSEARCH_FETCH_QUERY (?m)\[%{DATA:index}\]\[%{DATA:shard}\] took\[%{DATA:took}\], took_millis\[%{DATA:took_millis}\], types\[%{DATA:types}\], stats\[%{DATA:stats}\], search_type\[%{DATA:search_type}\], total_shards\[%{DATA:total_shards}\], source\[(?<source_body>(.|\r|\n)*\], extra_source\[)%{DATA:extra_source}
+ELASTICSEARCH_INDEX (?m)\[%{DATA:index}\]\[%{DATA:shard}\] took\[%{DATA:took}\], took_millis\[%{DATA:took_millis}\], type\[%{DATA:types}\], id\[%{DATA:id}\], routing\[%{DATA:routing}\], source\[(?<source_body>(.|\r|\n)*)\]$
+ELASTICSEARCH_ZYPPER (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{GREEDYDATA:messagePayload}
+
+# LOGSTASH
+LOGSTASH_WITHSEVERITY (?m){:timestamp=>"(?<timestamp>.*)", :message=>"(?<messageField>.*)", :level=>:(?<severity>.*)}%{GREEDYDATA:messagePayload}
+LOGSTASH (?m){:timestamp=>"(?<timestamp>.*)", :message=>"(?<messageField>.*)"}\s*%{GREEDYDATA:messagePayload}
+
+# LOGCOURIER
+LOGCOURIER (?m)%{TIMESTAMP_ISO8601:timestamp}\s*\[%{LOGLEVEL_CUSTOM:severity}\]\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# BIG DATA
+
+# AMBARI
+AMBARI_AGENT (?m)%{LOGLEVEL_CUSTOM:severity}\s*%{TIMESTAMP_ISO8601:timestamp}\s*%{USERNAME:classname}:%{NONNEGINT:lineNumber}\s*%{GREEDYDATA:messagePayload}
+AMBARI_SERVER (?m)%{MONTHDAY:monthDay}\s*%{MONTH:month}\s*%{YEAR:year}\s*%{TIME:time}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+
+# ZOOKEEPER and CONTROLLER
+ZOOKEEPER__BIGDATA_CONTROLLER1 (?m)%{TIMESTAMP_ISO8601:timestamp}%{DATA}%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+BIGDATA_CONTROLLER2 (?m)\s*%{LOGLEVEL_CUSTOM:severity}\s*\[%{USERNAME:thread}\]\s*\(%{DATA:classname}:%{NONNEGINT:lineNumber}\)\s*%{GREEDYDATA:messagePayload}
+
+# WEBHCAT
+WEBHCAT (?m)%{LOGLEVEL_CUSTOM:severity}\s*\|\s*%{MONTHDAY:monthDay}\s*%{MONTH:month}\s*%{YEAR:year}\s*%{TIME:time}\s*\|\s*%{USERNAME:packageName}\s*%{GREEDYDATA:messagePayload}
+
+# OOZIE
+OOZIE (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{USERNAME:classname}:%{NONNEGINT:lineNumber}\s*%{GREEDYDATA:messagePayload}
+
+# NAGIOS - no timestamp
+# HIVE - no timestamp
+
+# HADOOP
+HDFS (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+YARN (?m)%{MONTH:month}\s*%{MONTHDAY:monthDay},\s*%{YEAR:year}\s*%{TIME:time}\s*%{WORD:AMorPM}\s*%{DATA}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# MNR
+MNR (?m)%{LOGLEVEL_CUSTOM:severity}\s*--\s*\[%{TIMESTAMP_ISO8601:timestamp}\s*%{WORD}\]\s*--.\s*%{GREEDYDATA:messagePayload}
+MNR_ALLINONE (?m)%{WORD:severity}\s*--\s*\[%{TIMESTAMP_ISO8601:timestamp}\s*%{WORD}\]\s*--.\s*%{GREEDYDATA:messagePayload}
+MNR_CATALINA (?m)%{MONTH:month}\s*%{MONTHDAY:monthDay},\s*%{YEAR:year}\s*%{TIME:time}\s*%{WORD:AMorPM}\s*%{USERNAME:moduleName}\s*%{WORD}\s*.*\s*%{LOGLEVEL_CUSTOM:severity}\:\s*%{GREEDYDATA:messagePayload}
+MNR_AUDIT (?m)%{TIMESTAMP_ISO8601:timestamp}\s*-\s*%{LOGLEVEL_CUSTOM:severity}\s*-\s*-\s*%{GREEDYDATA:messagePayload}
+MNR_SEL .*\|\s*%{DATE_US:date}\s*\|\s*%{TIME:time}\s*\|\s*%{GREEDYDATA:messagePayload}
+
+
+#--------------------------------------------------------------------------#
+
+# BEDROCK
+BEDROCK_ERROR (?m)\[%{TIMESTAMP_ISO8601:timestamp}\s*%{INT}\]\s*\[%{NONNEGINT}\]\s*\[%{LOGLEVEL_CUSTOM:severity}\]\s*%{GREEDYDATA:messagePayload}
+BEDROCK (?m)%{LOGLEVEL_CUSTOM:severity}\:\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# LICENSE SERVICE and DB CONTROLLER
+LICENSE__DBCONTROLLER (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT:timeElapsed}\s*%{LOGLEVEL_CUSTOM:severity}\s*\[%{DATA:thread}\]\s*%{USERNAME:moduleName}\s*%{GREEDYDATA}\s*RequestID:%{DATA:RequestID},\s*UUID:%{DATA:uuid},\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# INVENTORY SERVICE and REGISTRY SERVICE
+INVENTORY__REGISTRY__UPGRADE (?m)%{LOGLEVEL_CUSTOM:severity}\s*\[%{TIMESTAMP_ISO8601:timestamp}\]\s*%{USERNAME:moduleName}\s*:\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# KDC
+KDC (?m)%{SYSLOGTIMESTAMP:timestamp}\s*%{SYSLOGHOST:hostname}\s*.*\(%{LOGLEVEL_CUSTOM:severity}\):%{GREEDYDATA:messagePayload}
+KDC_SUPERVISORD (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# ESRS
+ESRS (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT:timeElapsed}\s*\[%{USERNAME:thread}\]\s*%{LOGLEVEL_CUSTOM:severity}\s*%{USERNAME:moduleName}\s*%{GREEDYDATA:messagePayload}
+ESRS2 (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT:timeElapsed}\s*%{LOGLEVEL_CUSTOM:severity}\s*\[%{USERNAME:thread}\]\s*%{USERNAME:moduleName}\s*%{GREEDYDATA:messagePayload}
+ESRS_WITHGMT (?m)%{TIMESTAMP_ISO8601:timestamp}\s*{GMT}\s*%{NONNEGINT:timeElapsed}\s*\[%{USERNAME:thread}\]\s*%{LOGLEVEL_CUSTOM:severity}\s*%{USERNAME:moduleName}\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# ROUTING SERVICE
+
+# ospf-usvc/messages - syslog2 format
+#Supervisord
+OSPF_SUPERVISORD (?m)%{TIMESTAMP_ISO8601:timestamp}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+# error.log
+OSPF_ERROR (?m)\[%{TIMESTAMP_ISO8601:timestamp}.*\]\s*\[%{NONNEGINT:PID}.*\]\s*\[%{LOGLEVEL_CUSTOM:severity}.*\]\s*%{GREEDYDATA:messagePayload}
+# ospf_rest.log
+OSPF_REST %{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+
+#--------------------------------------------------------------------------#
+
+# NEUTRINO OTHERS COMPONENTS
+
+AODH %{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{USERNAME:modulename}\s*\[-\]\s*%{GREEDYDATA:messagePayload}
+CONSUL %{YEAR:year}\/%{MONTHNUM:monthNum}\/%{MONTHDAY:monthDay}\s*%{TIME:time}\s*\[%{LOGLEVEL_CUSTOM:severity}\]\s*%{GREEDYDATA:messagePayload}
+DESIGNATE %{TIMESTAMP_ISO8601:timestamp}\s*%{NONNEGINT}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{USERNAME:modulename}\s*%{GREEDYDATA:messagePayload}
+
+
+#--------------------------------------------------------------------------#
+
+# GENERIC - written individually for each parttype because _grokparsefailure is in tags even when parsing has already occured properly
+
+GENERIC_1 (?m)%{GREEDYDATA}%{TIMESTAMP_ISO8601:timestamp}\s*%{GREEDYDATA}\s*%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+GENERIC_2 (?m)%{GREEDYDATA}%{LOGLEVEL_CUSTOM:severity}%{GREEDYDATA}%{TIMESTAMP_ISO8601:timestamp}\s*%{GREEDYDATA:messagePayload}
+GENERIC_3 (?m)%{GREEDYDATA}%{TIMESTAMP_ISO8601:timestamp}\s*%{GREEDYDATA:messagePayload}
+GENERIC_4 (?m)%{LOGLEVEL_CUSTOM:severity}\s*%{GREEDYDATA:messagePayload}
+
+
+#--------------------------------------------------------------------------#
+
+# CUSTOM LOGLEVEL- removing err from standard grok version
+LOGLEVEL_CUSTOM ([A-a]lert|ALERT|[T|t]race|TRACE|[D|d]ebug|DEBUG|[N|n]otice|NOTICE|[I|i]nfo|INFO|[W|w]arn(?:ing)?|WARN(?:ING)?|[E|e]rror|ERROR|[C|c]rit?(?:ical)?|CRIT?(?:ICAL)?|[F|f]atal|FATAL|[S|s]evere|SEVERE|EMERG(?:ENCY)?|[Ee]merg(?:ency)?)
+
+TIMESTAMP_ISO8601_MODIFIED %{YEAR}/%{MONTHNUM}/%{MONTHDAY} %{HOUR}:?%{MINUTE}(?::?%{SECOND})
+
+COMMONAPACHELOG_CUSTOM %{IPORHOST:clientip} %{USER:ident} %{USER:auth} \[%{HTTPDATE:timestamp}\] "(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion})?|%{DATA:rawrequest})" %{NUMBER:response} (?:%{NUMBER:bytes:int}|-)
+COMBINEDAPACHELOG_CUSTOM %{COMMONAPACHELOG_CUSTOM} %{QS:referrer} %{QS:agent}
+

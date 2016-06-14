@@ -1,0 +1,29 @@
+#!/bin/sh
+
+#Bootstrap script to configure elasticsearch.yml file
+
+echo "cluster.name: ${ES_CLUSTER_NAME}" > ${ES_CONFIG_PATH}/elasticsearch.yml
+echo "path.data: ${ES_DATA_PATH}" >>   ${ES_CONFIG_PATH}/elasticsearch.yml
+echo "path.logs: ${ES_LOGS_PATH}" >>   ${ES_CONFIG_PATH}/elasticsearch.yml
+
+#Performance optimization settings
+echo "index.number_of_replicas: 1" >> ${ES_CONFIG_PATH}/elasticsearch.yml
+echo "index.number_of_shards: 3" >> ${ES_CONFIG_PATH}/elasticsearch.yml
+echo "discovery.zen.ping.multicast.enabled: false" >> ${ES_CONFIG_PATH}/elasticsearch.yml
+#echo "bootstrap.mlockall: true" >> ${ES_CONFIG_PATH}/elasticsearch.yml
+#echo "indices.memory.index_buffer_size: 50%" >> ${ES_CONFIG_PATH}/elasticsearch.yml
+
+
+#Search thread pool
+echo "threadpool.search.type: fixed" >> ${ES_CONFIG_PATH}/elasticsearch.yml
+echo "threadpool.search.size: 20" >> ${ES_CONFIG_PATH}/elasticsearch.yml
+echo "threadpool.search.queue_size: 100000" >> ${ES_CONFIG_PATH}/elasticsearch.yml
+
+#Index thread pool
+echo "threadpool.index.type: fixed" >> ${ES_CONFIG_PATH}/elasticsearch.yml
+echo "threadpool.index.size: 60" >> ${ES_CONFIG_PATH}/elasticsearch.yml
+echo "threadpool.index.queue_size: 200000" >> ${ES_CONFIG_PATH}/elasticsearch.yml
+
+#publish host as container host address
+echo "network.publish_host: ${CONTAINER_HOST_ADDRESS}" >> ${ES_CONFIG_PATH}/elasticsearch.yml
+

@@ -1,0 +1,56 @@
+apply plugin:'application'
+mainClassName = 'com.emc.caspian.ccs.account.server.Main'
+applicationDefaultJvmArgs = [ "-Xms256m", "-Xmx2048m" ]
+
+dependencies {
+    compile project(':account:api')
+    compile project(':account:authorization')
+    compile project(':account:util')
+    compile project(':account:model')
+    compile project(':account:datacontract')
+    compile project(':common:utils')
+    compile project(':common:webfilters')
+    compile project(':workflow:model')
+    compile project(':account:client')
+    compile"com.emc.caspian.encryption:encryption-java:${project.ext.version.encryptionjava}"
+    compile"com.unboundid:unboundid-ldapsdk:${project.ext.version.ldap}" 
+
+    testCompile "junit:junit:${project.ext.version.junit}"
+}
+
+task copyToLib(type: Copy) {
+    into "$buildDir/dist/libs"
+    from configurations.runtime
+}
+
+// Required to package workflow related files into the account docker image
+// TODO: Use build path variables to resolve paths correctly instead of using ..
+task copyFromWorker << {
+    copy {
+        from '../../workflow/worker/build/dist/libs'
+        into 'build/dist/libs'
+    }
+    copy {
+        from '../../workflow/worker/build/libs'
+        into 'build/libs'
+    }
+    copy {
+        from '../../workflow/worker/build/scripts/worker'
+        into 'build/scripts'
+    }
+}
+
+build.dependsOn(copyToLib)
+build.dependsOn(startScripts)
+copyFromWorker.dependsOn(copyToLib, startScripts)
+copyFromWorker.dependsOn(':workflow:worker:docker')
+
+apply plugin: 'docker'
+
+docker.images {
+    account {
+        imageName = "${ccsaccount}"
+        dir = project.projectDir
+    }
+}
+buildAccountImage.dependsOn(copyFromWorker, installApp)

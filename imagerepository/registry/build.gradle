@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':imagerepository:api')
+    compile "commons-beanutils:commons-beanutils:${project.ext.version.beanutils}",
+            "org.jdbi:jdbi:${project.ext.version.jdbi}",
+            "mysql:mysql-connector-java:${project.ext.version.mysqlconnector}",
+            "org.apache.commons:commons-dbcp2:${project.ext.version.dbcp2}"
+}
+

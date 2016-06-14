@@ -1,0 +1,11 @@
+dependencies {
+    compile project(':esrs:model')
+    compile project(':common:webfilters')
+    compile project(':common:utils')	
+    compile "org.eclipse.jetty:jetty-server:${project.ext.version.jetty}"
+    compile "org.eclipse.jetty:jetty-servlet:${project.ext.version.jetty}"
+    compile "org.eclipse.jetty:jetty-xml:${project.ext.version.jetty}"
+    compile "org.glassfish.jersey.core:jersey-server:${project.ext.version.jersey}"
+    compile "org.glassfish.jersey.core:jersey-client:${project.ext.version.jersey}"
+    compile "org.glassfish.jersey.containers:jersey-container-servlet-core:${project.ext.version.jersey}"
+}

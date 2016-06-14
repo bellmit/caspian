@@ -1,0 +1,8 @@
+apply plugin: 'docker'
+
+docker.images {
+    etcd {
+        imageName = "${ccsetcd}"
+        dir = project.file("src/main/docker")
+    }
+}

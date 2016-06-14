@@ -1,0 +1,61 @@
+apply plugin: 'java'
+apply plugin:'application'
+
+group = 'com.emc.caspian.ccs.license'
+mainClassName = 'com.emc.caspian.ccs.license.LicenseServer'
+applicationDefaultJvmArgs = ["-Dlog4j.configuration=log4j.properties", "-Xms128m", "-Xmx512m"]
+
+description = """Licensing server"""
+
+dependencies {
+   compile project(':keystone:middleware')
+   compile project(':common:webfilters')
+   compile project(':common:utils')
+    compile ("com.googlecode.json-simple:json-simple:${project.ext.version.jsonsimple}") {
+            exclude group:'junit'
+    }
+    compile "org.apache.httpcomponents:httpasyncclient:${project.ext.version.httpasynchclient}",
+            "org.apache.httpcomponents:httpclient:${project.ext.version.httpclient}",
+            "com.google.guava:guava:${project.ext.version.guava}",
+            "javax.xml:jaxb-api:${project.ext.version.jaxbapi}",
+            "log4j:log4j:${project.ext.version.log4j}",
+            "org.slf4j:slf4j-api:${project.ext.version.slf4japi}",
+            "org.codehaus.jackson:jackson-mapper-asl:${project.ext.version.jacksonmapperasl}",
+            "com.emc.clp.lib:elmjava:${project.ext.version.elmjava}",
+            "com.emc.clp.lib:flexlm:${project.ext.version.flexlm}",
+            "com.emc.clp.lib:EccpressoAll:${project.ext.version.eccpressoall}",
+            "org.eclipse.jetty:jetty-server:${project.ext.version.jetty}",
+            "org.eclipse.jetty:jetty-servlet:${project.ext.version.jetty}",
+            "org.glassfish.jersey.core:jersey-server:${project.ext.version.jersey}",
+            "org.glassfish.jersey.core:jersey-client:${project.ext.version.jersey}",
+            "org.glassfish.jersey.containers:jersey-container-servlet-core:${project.ext.version.jersey}",
+            "org.glassfish.jersey.containers:jersey-container-jetty-http:${project.ext.version.jersey}",
+            "com.emc.caspian:component-registry-client:${project.ext.version.componentregistryclient}",
+            "com.emc.caspian.encryption:encryption-java:${project.ext.version.encryptionjava}"
+            
+    testCompile "junit:junit:${project.ext.version.junit}"
+    testCompile "commons-io:commons-io:${project.ext.version.commonsio}"
+}
+
+// Configure any project with the application plugin
+plugins.withType(ApplicationPlugin) {
+    applicationDistribution.from('conf') {
+        into 'conf'
+    }
+    applicationDistribution.from('src/main/resources') {
+        into 'resources'
+    }
+    project.afterEvaluate {
+        installApp.with applicationDistribution
+    }
+}
+
+apply plugin: 'docker'
+
+docker.images {
+    license {
+        imageName = "${ccslicense}"
+        dir = project.projectDir
+    }
+}
+buildLicenseImage.dependsOn { installApp }

@@ -1,0 +1,766 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:rep="http://www.watch4net.com/APG/Remote/ReportManagerService" xmlns:xt="http://www.watch4net.com/APG/Web/XmlTree1">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <rep:getReport>
+<xt:node name="System Configuration Information" order="1" singleNodeId="c36c6487" uid="NEUTRINO-SYSTEM-CONFIGURATION">
+  <xt:property type="NodeFilter" filterExpression="#APG:ALL"/>
+  <xt:property type="ReportPreferences" defaultMode="mix"/>
+  <xt:node name="Entitlements" order="0" singleNodeId="6b4b9adc">
+    <xt:property type="ReportPreferences" duration="l2w" preferredPeriod="3600" preferredAggregate="last"/>
+    <xt:property type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+    <xt:property type="NodePropertyNodeColumn" name="Service" nodeProperty="name"/>
+    <xt:property type="PropertyNodeColumn" name="Type" property="duration"/>
+    <xt:property type="PropertyNodeColumn" name="Entitlement" property="enttype"/>
+    <xt:property type="ValueNodeColumn" name="Start Date" resultName="Start Date" period="inherit" forcePeriod="never" useTimeRange="true" formatter="DateTimeFormatter" summaryLabel=""/>
+    <xt:property type="ValueNodeColumn" name="End Date" resultName="End Date" period="inherit" forcePeriod="never" useTimeRange="true" formatter="DateTimeFormatter" summaryLabel=""/>
+    <xt:property type="ValueNodeColumn" name="Entitled" resultName="Entitled" period="inherit" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" roundingAccuracy="0" summaryLabel=""/>
+    <xt:property type="ValueNodeColumn" name="Consumed" resultName="Consumed" period="inherit" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" replaceNullWithZero="true" formatter="ValueToStringFormatter&lt;key_0.0=-&gt;" roundingAccuracy="0" summaryLabel=""/>
+    <xt:property type="ValueNodeColumn" name="Usage (%)" display="never" description="The percentage of consumed vs entitled resource" resultName="Usage" period="inherit" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" replaceNullWithZero="true" formatter="BasicFormatter" summaryLabel="">
+      <xt:threshold name="Compliant" color="#f7f7f7" value="0.0"/>
+      <xt:threshold severity="MAJOR" value="90.0"/>
+      <xt:threshold severity="CRITICAL" value="95.0"/>
+    </xt:property>
+    <xt:property type="ValueNodeColumn" name="Days Until Expiration" display="no" filterExpression="name=='DaysUntilExpiration'" period="inherit" forcePeriod="never" timeThreshold="86400" roundingAccuracy="0" summaryLabel=""/>
+    <xt:property type="ValueNodeColumn" name="Install Date" display="no" resultName="Install Date" period="inherit" forcePeriod="never" useTimeRange="true" formatter="DateTimeFormatter" summaryLabel=""/>
+    <xt:node name="Cloud Compute" order="0" singleNodeId="7f1f189e">
+      <xt:property type="NodeFilter" filterExpression="parttype=='License' &amp; part=='Cloud Compute Cores' | ecisvc=='Cloud Compute' &amp; name=='ServiceProcessorCount'"/>
+      <xt:property type="ReportPreferences" defaultMode="lst" duration="l2w" preferredPeriod="3600"/>
+      <xt:property type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+      <xt:property type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="100"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="Consumed" from="node"/>
+        <xt:parameter name="denominator" type="FilterFormulaParameterDefinition" filter="name=='ServiceProcessorCount'"/>
+        <xt:result name="Usage" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="FilterFormulaParameterDefinition" filter="ecisvc=='Cloud Compute' &amp; name=='ServiceProcessorCount'"/>
+        <xt:result name="Consumed" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="FilterFormulaParameterDefinition" filter="part=='Cloud Compute Cores' &amp; name=='Limit'"/>
+        <xt:result name="Entitled" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="enddate"/>
+        <xt:result name="endDate_ts" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="strtdate"/>
+        <xt:result name="startDate_ts" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="1"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="startDate_ts" from="node"/>
+        <xt:parameter name="denominator" type="ConstantFormulaParameterDefinition" value="1000.0"/>
+        <xt:result name="Start Date" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="1"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="endDate_ts" from="node"/>
+        <xt:parameter name="denominator" type="ConstantFormulaParameterDefinition" value="1000.0"/>
+        <xt:result name="End Date" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="instdate"/>
+        <xt:result name="installDate_ts" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="1"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="installDate_ts" from="node"/>
+        <xt:parameter name="denominator" type="ConstantFormulaParameterDefinition" value="1000.0"/>
+        <xt:result name="Install Date" default="false" graphable="false"/>
+      </xt:formula>
+    </xt:node>
+    <xt:node name="Cloud Compute" order="1" singleNodeId="abc6c29c">
+      <xt:property type="NodeFilter" filterExpression="parttype=='License' &amp; part=='Cloud Compute Storage' | ecisvc=='Cloud Compute' &amp; name=='ServiceRawCapacity'"/>
+      <xt:property type="ReportPreferences" defaultMode="lst" duration="l2w" preferredPeriod="3600"/>
+      <xt:property type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+      <xt:property type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="100"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="Consumed" from="node"/>
+        <xt:parameter name="denominator" type="FilterFormulaParameterDefinition" filter="name=='ServiceRawCapacity'"/>
+        <xt:result name="Usage" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="FilterFormulaParameterDefinition" filter="ecisvc=='Cloud Compute' &amp; name=='ServiceRawCapacity'"/>
+        <xt:result name="Consumed" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="FilterFormulaParameterDefinition" filter="part=='Cloud Compute Storage' &amp; name=='Limit'"/>
+        <xt:result name="Entitled" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="enddate"/>
+        <xt:result name="endDate_ts" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="strtdate"/>
+        <xt:result name="startDate_ts" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="1"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="startDate_ts" from="node"/>
+        <xt:parameter name="denominator" type="ConstantFormulaParameterDefinition" value="1000.0"/>
+        <xt:result name="Start Date" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="1"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="endDate_ts" from="node"/>
+        <xt:parameter name="denominator" type="ConstantFormulaParameterDefinition" value="1000.0"/>
+        <xt:result name="End Date" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="instdate"/>
+        <xt:result name="installDate_ts" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="1"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="installDate_ts" from="node"/>
+        <xt:parameter name="denominator" type="ConstantFormulaParameterDefinition" value="1000.0"/>
+        <xt:result name="Install Date" default="false" graphable="false"/>
+      </xt:formula>
+    </xt:node>
+    <xt:node name="Big Data" order="2" singleNodeId="c710bded">
+      <xt:property type="NodeFilter" filterExpression="part=='Big Data'"/>
+      <xt:property type="ReportPreferences" defaultMode="lst" duration="l2w" preferredPeriod="3600"/>
+      <xt:property type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+      <xt:property type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="100"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="Consumed" from="node"/>
+        <xt:parameter name="denominator" type="FilterFormulaParameterDefinition" filter="name=='ServiceProcessorCount'"/>
+        <xt:result name="Usage" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="FilterFormulaParameterDefinition" filter="ecisvc=='Big Data' &amp; name=='ServiceProcessorCount'"/>
+        <xt:result name="Consumed" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="FilterFormulaParameterDefinition" filter="part=='Big Data' &amp; name=='Limit'"/>
+        <xt:result name="Entitled" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="enddate"/>
+        <xt:result name="endDate_ts" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="strtdate"/>
+        <xt:result name="startDate_ts" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="1"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="startDate_ts" from="node"/>
+        <xt:parameter name="denominator" type="ConstantFormulaParameterDefinition" value="1000.0"/>
+        <xt:result name="Start Date" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="1"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="endDate_ts" from="node"/>
+        <xt:parameter name="denominator" type="ConstantFormulaParameterDefinition" value="1000.0"/>
+        <xt:result name="End Date" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="instdate"/>
+        <xt:result name="installDate_ts" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="1"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="installDate_ts" from="node"/>
+        <xt:parameter name="denominator" type="ConstantFormulaParameterDefinition" value="1000.0"/>
+        <xt:result name="Install Date" default="false" graphable="false"/>
+      </xt:formula>
+    </xt:node>
+    <xt:node name="Object Storage" order="3" singleNodeId="38b17840">
+      <xt:property type="NodeFilter" filterExpression="part=='Object Storage'"/>
+      <xt:property type="ReportPreferences" defaultMode="lst" duration="l2w" preferredPeriod="3600"/>
+      <xt:property type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+      <xt:property type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="100"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="Consumed" from="node"/>
+        <xt:parameter name="denominator" type="FilterFormulaParameterDefinition" filter="name=='ServiceRawCapacity'"/>
+        <xt:result name="Usage" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="FilterFormulaParameterDefinition" filter="ecisvc=='Object Storage' &amp; name=='ServiceRawCapacity'"/>
+        <xt:result name="Consumed" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="FilterFormulaParameterDefinition" filter="part=='Object Storage' &amp; name=='Limit'"/>
+        <xt:result name="Entitled" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="enddate"/>
+        <xt:result name="endDate_ts" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="strtdate"/>
+        <xt:result name="startDate_ts" default="false" graphable="true"/>
+      </xt:formula>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="1"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="startDate_ts" from="node"/>
+        <xt:parameter name="denominator" type="ConstantFormulaParameterDefinition" value="1000.0"/>
+        <xt:result name="Start Date" default="false" graphable="true"/>
+      </xt:formula>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="1"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="endDate_ts" from="node"/>
+        <xt:parameter name="denominator" type="ConstantFormulaParameterDefinition" value="1000.0"/>
+        <xt:result name="End Date" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="instdate"/>
+        <xt:result name="installDate_ts" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="math.Division">
+        <xt:setting name="scale" value="1"/>
+        <xt:parameter name="numerator" type="ResultFormulaParameterDefinition" result="installDate_ts" from="node"/>
+        <xt:parameter name="denominator" type="ConstantFormulaParameterDefinition" value="1000.0"/>
+        <xt:result name="Install Date" default="false" graphable="false"/>
+      </xt:formula>
+    </xt:node>
+    <xt:node name="Developer Platform" order="4" singleNodeId="624a9b88">
+      <xt:property type="NodeFilter" filterExpression="part=='Developer Platform'"/>
+      <xt:property type="ReportPreferences" defaultMode="lst" duration="l2w" preferredPeriod="3600"/>
+      <xt:property type="DisplayPreferences" displayPolicy="alwaysHide"/>
+      <xt:property type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="enddate"/>
+        <xt:result name="End Date" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="instdate"/>
+        <xt:result name="Install Date" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="strtdate"/>
+        <xt:result name="Start Date" default="false" graphable="false"/>
+      </xt:formula>
+    </xt:node>
+  </xt:node>
+  
+  <xt:node name="Nodes" order="1" singleNodeId="d7fcdb93">
+    <xt:property type="NodeFilter" filterExpression="!(vstatus=='inactive')"/>
+    <xt:property type="NodePropertyNodeColumn" name="Node" nodeProperty="name"/>
+    <xt:property type="PropertyNodeColumn" name="IP" description="Management IP. All IP addresses are available when you drill-down." property="mgmtip"/>
+    <xt:property type="PropertyNodeColumn" name="Model" property="model"/>
+    <xt:property type="PropertyNodeColumn" name="Serial Number" property="serialnb"/>
+    <xt:property type="PropertyNodeColumn" name="OS" property="devdesc"/>
+    <xt:property type="PropertyNodeColumn" name="Service" property="ecisvc"/>
+    <xt:property type="PropertyNodeColumn" name="Rack" property="rack"/>
+    <xt:property type="PropertyNodeColumn" name="Brick" property="brick"/>
+    <xt:property type="PropertyNodeColumn" name="No. CPU" property="nbcpu"/>
+    <xt:property type="ValueNodeColumn" name="Memory" resultName="Memory" forcePeriod="never" timeThreshold="600" formatter="BasicFormatter" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::MB::Byte::Storage" summaryLabel=""/>
+    <xt:property type="ValueNodeColumn" name="No. Disks" resultName="No. Disks" forcePeriod="never" timeThreshold="600" formatter="BasicFormatter" roundingAccuracy="-1" summaryLabel=""/>
+    <xt:property type="ValueNodeColumn" name="Total Disk Storage" resultName="DisksCapacity" forcePeriod="never" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage" summaryLabel=""/>
+    <xt:property type="ValueNodeColumn" name="Uptime" filterExpression="name=='Uptime' &amp; !(part)" forcePeriod="never" timeThreshold="3600" formatter="DurationFormatter" summaryLabel="">
+      <xt:threshold severity="CRITICAL" value="0.0"/>
+      <xt:threshold severity="MAJOR" value="43200.0"/>
+      <xt:threshold severity="OK" value="86400.0"/>
+    </xt:property>
+    <xt:formula formulaId="util.ChildCount">
+      <xt:result name="Child Count" default="false" graphable="false"/>
+    </xt:formula>
+    <xt:formula formulaId="math.spatial.Sum">
+      <xt:setting name="aggregation" value="DEFAULT"/>
+      <xt:setting name="partial" value="false"/>
+      <xt:parameter name="metric" type="ResultFormulaParameterDefinition" result="No. CPUs"/>
+      <xt:result name="No. CPUs" default="false" graphable="false"/>
+    </xt:formula>
+    <xt:formula formulaId="math.spatial.Sum">
+      <xt:setting name="aggregation" value="DEFAULT"/>
+      <xt:setting name="partial" value="false"/>
+      <xt:parameter name="metric" type="ResultFormulaParameterDefinition" result="No. Disks"/>
+      <xt:result name="No. Disks" default="false" graphable="false"/>
+    </xt:formula>
+    <xt:formula formulaId="math.spatial.Sum">
+      <xt:setting name="aggregation" value="DEFAULT"/>
+      <xt:setting name="partial" value="false"/>
+      <xt:parameter name="metric" type="ResultFormulaParameterDefinition" result="Memory"/>
+      <xt:result name="Memory" default="false" graphable="false"/>
+    </xt:formula>
+    <xt:formula formulaId="math.spatial.Sum">
+      <xt:setting name="aggregation" value="DEFAULT"/>
+      <xt:setting name="partial" value="false"/>
+      <xt:parameter name="metric" type="ResultFormulaParameterDefinition" result="DisksCapacity"/>
+      <xt:result name="StorageCapacity" default="false" graphable="false"/>
+    </xt:formula>
+    <xt:node name="Host devices" order="0" singleNodeId="a6a47e74">
+      <xt:property type="NodeFilter" filterExpression="datagrp='%-LINUX' &amp; !(devtype=='Hypervisor')"/>
+      <xt:property type="NodeExpansion" expandOn="device" filterMode="both"/>
+      <xt:property type="ReportPreferences" displayedProperties="devdesc domain[Domain] cpu[CPU Details] nbcpu[CPU Count] memory[Physical Memory (MB)] model vendor[Device Vendor]"/>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="memory"/>
+        <xt:result name="Memory" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.DistinctValueCountFormula">
+        <xt:setting name="Filter" value="parttype=='Disk'"/>
+        <xt:setting name="ExpandOn" value="part"/>
+        <xt:setting name="Level-Up" value="0"/>
+        <xt:result name="No. Disks" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="nbcpu"/>
+        <xt:result name="No. CPUs" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="ResultFormulaParameterDefinition" result="DisksCapacity"/>
+        <xt:result name="DisksCapacity" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:report-rendering>
+        <xt:charts mode="dynamic"/>
+      </xt:report-rendering>
+      <xt:node name="Storage" order="1" singleNodeId="533eb1d2">
+        <xt:property type="ReportPreferences" displayMode="2" defaultMode="mix"/>
+        <xt:property type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+        <xt:formula formulaId="util.Nop">
+          <xt:parameter name="metric" type="ResultFormulaParameterDefinition" result="DisksCapacity"/>
+          <xt:result name="DisksCapacity" default="false" graphable="false"/>
+        </xt:formula>
+        <xt:report-layout hspan=".-937cfcf5=2"/>
+        <xt:report-rendering>
+          <xt:charts mode="dynamic"/>
+        </xt:report-rendering>
+        <xt:node name="Disks" order="4" singleNodeId="937cfcf5">
+          <xt:property type="NodeFilter" filterExpression="parttype=='Disk' &amp; !(partdesc=='ScaleIO')"/>
+          <xt:property type="ReportPreferences" duration="l1w" preferredPeriod="3600"/>
+          <xt:property type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+          <xt:property type="NodePropertyNodeColumn" name="Disk" nodeProperty="name"/>
+          <xt:property type="ValueNodeColumn" name="Capacity" filterExpression="name=='Capacity'" period="3600" forcePeriod="never" timeThreshold="2" formatter="PerformanceSparkLineFormatter" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage" summaryLabel="" summaryAggregate="6"/>
+          <xt:property type="PropertyNodeColumn" name="Is Used ?" display="no" description="&quot;Is Used ?&quot; means there is a File System, a VolumeGroup or a Partition using the disk" property="isused"/>
+          <xt:property type="ValueNodeColumn" name="Throughput (MB/s)" filterExpression="name=='Throughput'" forcePeriod="never" useTimeRange="true" formatter="SparkLineFormatter" summaryLabel=""/>
+          <xt:property type="ValueNodeColumn" name="Requests (IOPS)" filterExpression="name=='Requests'" forcePeriod="never" useTimeRange="true" formatter="SparkLineFormatter" summaryLabel=""/>
+          <xt:formula formulaId="math.spatial.Sum">
+            <xt:setting name="aggregation" value="DEFAULT"/>
+            <xt:setting name="partial" value="false"/>
+            <xt:parameter name="metric" type="ResultFormulaParameterDefinition" result="Capacity"/>
+            <xt:result name="DisksCapacity" default="false" graphable="false"/>
+          </xt:formula>
+          <xt:node name="part" singleNodeId="c170ab35">
+            <xt:property type="NodeFilter" filterExpression="parttype=='Disk' &amp; !(partdesc=='ScaleIO')"/>
+            <xt:property type="NodeExpansion" expandOn="part" filterMode="both"/>
+            <xt:property type="ReportPreferences" displayMode="2" defaultMode="mix" duration="l1w" preferredPeriod="3600"/>
+            <xt:formula formulaId="util.Nop">
+              <xt:parameter name="metric" type="FilterFormulaParameterDefinition" filter="name=='Capacity' &amp; !(partdesc=='ScaleIO')"/>
+              <xt:result name="Capacity" default="true" graphable="false"/>
+            </xt:formula>
+            <xt:report-rendering>
+              <xt:charts mode="dynamic"/>
+            </xt:report-rendering>
+            <xt:node name="name" singleNodeId="ea25ec42">
+              <xt:property type="NodeExpansion" expandOn="name"/>
+              <xt:property type="ReportPreferences" defaultMode="nrx" legendDisplayPolicy="visible"/>
+              <xt:customization curve="spline" filter="*"/>
+              <xt:report-rendering>
+                <xt:charts mode="dynamic"/>
+              </xt:report-rendering>
+            </xt:node>
+          </xt:node>
+        </xt:node>
+      </xt:node>
+    </xt:node>
+  </xt:node>
+ 
+  <xt:node name="Image Summary" order="2" singleNodeId="d7902707">
+    <xt:property type="ReportPreferences" paging="10"/>
+    <xt:property type="DisplayPreferences" displayPolicy="hideIfLeaf"/>
+    <xt:property type="NodePropertyNodeColumn" name="Image Name" nodeProperty="name"/>
+    <xt:property type="ValueNodeColumn" name="No. Nodes" sortMode="desc" resultName="Nb. Servers" forcePeriod="never" timeThreshold="600" formatter="BasicFormatter" roundingAccuracy="-1" summaryLabel=""/>
+    <xt:property type="ValueNodeColumn" name="No. Containers" sortMode="desc" description="Count also down containers" resultName="Nb. Containers" forcePeriod="never" timeThreshold="600" formatter="BasicFormatter" roundingAccuracy="-1" summaryLabel=""/>
+    <xt:node name="imgid,appname" singleNodeId="171f3fc2">
+      <xt:property type="NodeExpansion" expandOn="imgid&lt;type=hide&gt;,appname&lt;type=regex;value-match=.+\/(.+):(.+)\.[\dabcdef]+;value-replace=$1 ($2)&gt;"/>
+      <xt:property type="PropertyNodeColumn" name="Node" property="device"/>
+      <xt:property type="PropertyNodeColumn" name="Neutrino Service" display="no" property="ecisvccp"/>
+      <xt:property type="PropertyNodeColumn" name="Container name" property="contname"/>
+      <xt:property type="PropertyNodeColumn" name="Application Name" property="appname"/>
+      <xt:property type="ValueNodeColumn" name="Availability" sortMode="desc#4" filterExpression="name=='Availability'" forcePeriod="never" aggregationFunc="min" useTimeRange="true" formatter="StatusSparkLineFormatter" summaryLabel="">
+        <xt:threshold severity="CRITICAL" value="0.0"/>
+        <xt:threshold severity="OK" value="90.0"/>
+      </xt:property>
+      <xt:property type="ValueNodeColumn" name="CPU Utilization (%)" sortMode="desc" filterExpression="name=='CPUUtilization'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" formatter="BarChartSparkLineFormatter" summaryLabel="">
+        <xt:threshold severity="OK" value="0.0"/>
+        <xt:threshold severity="MAJOR" value="20.0"/>
+        <xt:threshold severity="CRITICAL" value="70.0"/>
+      </xt:property>
+      <xt:property type="ValueNodeColumn" name="Memory Utilization (%)" sortMode="desc#1" filterExpression="name=='MemoryUtilization'" forcePeriod="never" aggregationFunc="max" useTimeRange="true" valuesAggregationFunc="max" formatter="BarChartSparkLineFormatter" roundingAccuracy="0" summaryLabel="">
+        <xt:threshold severity="OK" value="0.0"/>
+        <xt:threshold severity="MAJOR" value="70.0"/>
+        <xt:threshold severity="CRITICAL" value="90.0"/>
+      </xt:property>
+      <xt:property type="ValueNodeColumn" name="Memory Utilization" filterExpression="name=='MemoryUsage'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" formatter="SparkLineFormatter" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::MB::Byte::Storage" summaryLabel=""/>
+      <xt:property type="ValueNodeColumn" name="Process Count" sortMode="desc#2" filterExpression="name=='ProcessCount'" forcePeriod="never" aggregationFunc="max" timeThreshold="3600" formatter="PerformanceSparkLineFormatter" roundingAccuracy="-1" summaryLabel=""/>
+      <xt:property type="ValueNodeColumn" name="Uptime" display="no" filterExpression="name=='Uptime'" period="inherit" forcePeriod="never" aggregationFunc="inherit" durationOverride="d:p15m" timeThreshold="900" formatter="DurationFormatter" summaryLabel=""/>
+      <xt:formula formulaId="util.DistinctValueCountFormula">
+        <xt:setting name="Filter" value="*"/>
+        <xt:setting name="ExpandOn" value="device"/>
+        <xt:setting name="Level-Up" value="0"/>
+        <xt:result name="Nb. Servers" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.DistinctValueCountFormula">
+        <xt:setting name="Filter" value="*"/>
+        <xt:setting name="ExpandOn" value="appuid"/>
+        <xt:setting name="Level-Up" value="0"/>
+        <xt:result name="Nb. Containers" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:node name="device,contname,appuid" singleNodeId="fac9def2">
+        <xt:property type="NodeExpansion" expandOn="device,contname,appuid&lt;type=hide&gt;"/>
+        <xt:property type="ReportPreferences" displayMode="3" defaultMode="dmx"/>
+        <xt:property type="NodePropertyNodeColumn" name="Device" nodeProperty="name"/>
+        <xt:report-layout hspan="*:{CONTAINER-SUMMARY}-d5a81b60=3"/>
+        <xt:report-rendering>
+          <xt:charts mode="dynamic"/>
+        </xt:report-rendering>
+        <xt:node name="Container Summary" singleNodeId="78961352">
+          <xt:property type="NodeExpansion" expandOn="appname,contname,appuid&lt;type=hide&gt;"/>
+          <xt:property type="ReportPreferences" displayMode="3" defaultMode="dmx"/>
+          <xt:formula formulaId="util.Nop">
+            <xt:parameter name="metric" type="FilterFormulaParameterDefinition" filter="name=='MemoryUsage'"/>
+            <xt:result name="mem" default="false" graphable="false"/>
+          </xt:formula>
+          <xt:formula formulaId="util.Nop">
+            <xt:parameter name="metric" type="FilterFormulaParameterDefinition" filter="name=='CPUUtilization'"/>
+            <xt:result name="cpu" default="false" graphable="false"/>
+          </xt:formula>
+          <xt:report-layout vspan="*:{CONTAINER-SUMMARY}-d5a81b60-ca2050a-f7f74eac=1" hspan="*:{CONTAINER-SUMMARY}-d5a81b60-ca2050a-f7f74eac=3,*:{CONTAINER-SUMMARY}-e32e715a=1,*:{CONTAINER-SUMMARY}-d5a81b60=3,*:#CONTAINER-DISK-SUMMARY=3" order="*:{CONTAINER-SUMMARY}-d5a81b60-ca2050a-f7f74eac=1,*:{CONTAINER-SUMMARY}-e32e715a=2,*:{CONTAINER-SUMMARY}-8b788c7c=3,*:{CONTAINER-SUMMARY}-50d535de=4"/>
+          <xt:report-rendering>
+            <xt:charts mode="dynamic"/>
+          </xt:report-rendering>
+          <xt:node name="Container details" order="0" singleNodeId="d5a81b60">
+            <xt:property type="NodePropertyNodeColumn" name="Container Name" nodeProperty="name"/>
+            <xt:property type="PropertyNodeColumn" name="Container ID" property="contid"/>
+            <xt:property type="PropertyNodeColumn" name="Image Name" property="imgname"/>
+            <xt:property type="PropertyNodeColumn" name="CPU Priority" property="cpuprio"/>
+            <xt:property type="PropertyNodeColumn" name="CPU limit" description="# of CPU given to the container (default is the same as No. CPU)" property="cpulimit"/>
+            <xt:property type="PropertyNodeColumn" name="No. CPU" description="Number of CPU for the server" property="nbcpu"/>
+            <xt:property type="ValueNodeColumn" name="Availability" filterExpression="name=='Availability'" period="inherit" forcePeriod="never" useTimeRange="true" formatter="StatusSparkLineFormatter" summaryLabel="">
+              <xt:threshold severity="CRITICAL" value="0.0"/>
+              <xt:threshold severity="OK" value="90.0"/>
+            </xt:property>
+            <xt:node name="appname" singleNodeId="ca2050a">
+              <xt:property type="NodeExpansion" expandOn="appname"/>
+              <xt:property type="ReportPreferences" defaultMode="lst"/>
+              <xt:property type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+              <xt:property type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+              <xt:node name="Availability" order="0" singleNodeId="f7f74eac">
+                <xt:property type="NodeFilter" filterExpression="name=='Availability'"/>
+                <xt:property type="ReportPreferences" displayMode="1" defaultMode="nrb" preferredPeriod="3600" maxValue="109.0"/>
+                <xt:threshold severity="CRITICAL" value="-Infinity"/>
+                <xt:threshold severity="MAJOR" value="99.0"/>
+                <xt:threshold severity="OK" value="100.0"/>
+                <xt:report-rendering>
+                  <xt:charts mode="dynamic"/>
+                </xt:report-rendering>
+                <xt:status-report>
+                  <xt:marker type="circle" size="large"/>
+                  <xt:info properties="appname"/>
+                </xt:status-report>
+                <xt:node name="Application Availability" singleNodeId="767d80f7">
+                  <xt:property type="ReportPreferences" defaultMode="lst"/>
+                  <xt:formula formulaId="util.Nop">
+                    <xt:parameter name="metric" type="FilterFormulaParameterDefinition" filter="name=='Availability'"/>
+                    <xt:result name="OperStatus" default="true" graphable="false"/>
+                  </xt:formula>
+                </xt:node>
+              </xt:node>
+              <xt:node name="Image TBD" singleNodeId="67e0a917">
+                <xt:property type="ReportPreferences" defaultMode="lst"/>
+              </xt:node>
+            </xt:node>
+          </xt:node>
+          <xt:node name="CPU Utilization" order="1" singleNodeId="e32e715a">
+            <xt:property type="NodeFilter" filterExpression="name=='RelativeCPUUtilization'"/>
+            <xt:property type="ReportPreferences" displayMode="2" defaultMode="nrx" legendProperties="appname unit" maxValue="109.0" minValue="-0.5"/>
+            <xt:threshold severity="MAJOR" value="70.0"/>
+            <xt:threshold severity="CRITICAL" value="80.0"/>
+            <xt:overlay type="EVENTS" title="Process Count" filter="name=='ProcessCount'" from="0" to="100" lines="1" zIndex="top">
+              <xt:momentary size="1.0" marker="SQUARE" icon="SQUARE"/>
+              <xt:durable width="1.0" start="LINE" end="LINE"/>
+            </xt:overlay>
+            <xt:customization curve="spline" filter="*"/>
+            <xt:report-rendering>
+              <xt:charts mode="dynamic"/>
+            </xt:report-rendering>
+          </xt:node>
+          <xt:node name="Absolute CPU Utilization" order="1" singleNodeId="d12a2b52">
+            <xt:property type="NodeFilter" filterExpression="name=='CPUUtilization'"/>
+            <xt:property type="ReportPreferences" displayMode="2" defaultMode="nrx" description="100 % means a full core is used" legendProperties="appname unit" minValue="-0.5"/>
+            <xt:threshold severity="MAJOR" value="100.0"/>
+            <xt:threshold severity="CRITICAL" value="200.0"/>
+            <xt:overlay type="EVENTS" title="Process Count" filter="name=='ProcessCount'" from="0" to="100" lines="1" zIndex="top">
+              <xt:momentary size="1.0" marker="SQUARE" icon="SQUARE"/>
+              <xt:durable width="1.0" start="LINE" end="LINE"/>
+            </xt:overlay>
+            <xt:customization curve="spline" filter="*"/>
+            <xt:report-rendering>
+              <xt:charts mode="dynamic"/>
+            </xt:report-rendering>
+          </xt:node>
+          <xt:node name="Memory Utilization" order="2" singleNodeId="8b788c7c">
+            <xt:property type="NodeFilter" filterExpression="name=='MemoryUtilization'"/>
+            <xt:property type="ReportPreferences" displayMode="2" defaultMode="nrx" maxValue="109.0"/>
+            <xt:threshold severity="MAJOR" value="75.0"/>
+            <xt:threshold severity="CRITICAL" value="90.0"/>
+            <xt:report-rendering>
+              <xt:charts mode="dynamic"/>
+            </xt:report-rendering>
+          </xt:node>
+          <xt:node name="Memory Usage" order="3" singleNodeId="752be79a">
+            <xt:property type="NodeFilter" filterExpression="name='Memory%' &amp; unit=='MB'"/>
+            <xt:property type="ReportPreferences" displayMode="2" defaultMode="nrx" graphScaleFactor="Byte::Storage::MB::Byte::Storage"/>
+            <xt:formula formulaId="util.Nop">
+              <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="appmem"/>
+              <xt:result name="MemoryLimit" default="false" graphable="true"/>
+            </xt:formula>
+            <xt:formula formulaId="util.Nop">
+              <xt:parameter name="metric" type="FilterFormulaParameterDefinition" filter="name=='MemoryUsage'"/>
+              <xt:result name="MemoryUsage" default="false" graphable="true"/>
+            </xt:formula>
+            <xt:customization color="#ff0000" width="2.5" filter="@result=='MemoryLimit'"/>
+            <xt:customization color="#2c96dd" curve="spline" filter="@result=='MemoryUsage'"/>
+            <xt:report-rendering>
+              <xt:charts mode="dynamic"/>
+            </xt:report-rendering>
+          </xt:node>
+          <xt:node name="Process Count" order="4" singleNodeId="50d535de">
+            <xt:property type="NodeFilter" filterExpression="name=='ProcessCount'"/>
+            <xt:property type="ReportPreferences" defaultMode="nrx"/>
+            <xt:report-rendering>
+              <xt:charts mode="dynamic"/>
+            </xt:report-rendering>
+          </xt:node>
+          <xt:node name="Block Devices" order="5" singleNodeId="29cce053" uid="CONTAINER-DISK-SUMMARY">
+            <xt:property type="NodeFilter" filterExpression="parttype=='Disk' | parttype=='LoopDevice' | parttype=='BlockDevice'"/>
+            <xt:property type="ReportPreferences" description="This report shows the activity of the container on particular Block Devices.&#10;&#10;A Block Device can be a Loop Device (device mapper), a raw disk (/dev/sdX) or another type of Block Device (PV)."/>
+            <xt:property type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+            <xt:property type="NodePropertyNodeColumn" name="Block Device" nodeProperty="name"/>
+            <xt:property type="ValueNodeColumn" name="Total Read IOPS" filterExpression="name=='ReadIO'" forcePeriod="never" aggregationFunc="sum" useTimeRange="true" valuesAggregationFunc="sum" formatter="SparkLineFormatter" summaryLabel="" summaryAggregate="6"/>
+            <xt:property type="ValueNodeColumn" name="Total Write IOPS" filterExpression="name=='WriteIO'" forcePeriod="never" aggregationFunc="sum" useTimeRange="true" valuesAggregationFunc="sum" formatter="SparkLineFormatter" summaryLabel="" summaryAggregate="6"/>
+            <xt:node name="part" singleNodeId="67ecba8c">
+              <xt:property type="NodeExpansion" expandOn="part"/>
+              <xt:property type="ReportPreferences" displayMode="3" defaultMode="mix"/>
+              <xt:report-rendering>
+                <xt:charts mode="dynamic"/>
+              </xt:report-rendering>
+              <xt:node name="name" singleNodeId="310efaf7">
+                <xt:property type="NodeExpansion" expandOn="name"/>
+                <xt:property type="ReportPreferences" defaultMode="nrx"/>
+                <xt:report-rendering>
+                  <xt:charts mode="dynamic"/>
+                </xt:report-rendering>
+              </xt:node>
+            </xt:node>
+          </xt:node>
+        </xt:node>
+      </xt:node>
+    </xt:node>
+  </xt:node>
+ 
+  <xt:node name="VLANs" order="3" singleNodeId="3a543311">
+    <xt:property type="NodeFilter" filterExpression="devtype=='Switch' &amp; parttype=='VLAN'"/>
+    <xt:property type="ReportPreferences" paging="5"/>
+    <xt:property type="NodePropertyNodeColumn" name="VLAN" nodeProperty="name"/>
+    <xt:property type="PropertyNodeColumn" name="Switches" property="device"/>
+    <xt:formula formulaId="util.ChildCount">
+      <xt:result name="vlanCount" default="true" graphable="false"/>
+    </xt:formula>
+    <xt:node name="part" singleNodeId="6e4f96a8">
+      <xt:property type="NodeExpansion" expandOn="part"/>
+      <xt:property type="ReportPreferences" defaultMode="lst"/>
+      <xt:property type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+    </xt:node>
+  </xt:node>
+    
+  <xt:node name="Accounts" order="4" singleNodeId="5dec6a9a">
+    <xt:property type="PropertyNodeColumn" name="Account" property="customer"/>
+    <xt:property type="ValueNodeColumn" name="No. Domains" resultName="Domain Count" forcePeriod="never" timeThreshold="600" replaceNullWithZero="true" roundingAccuracy="0" summaryLabel=""/>
+    <xt:property type="ValueNodeColumn" name="No. Projects" resultName="Project Count" forcePeriod="never" timeThreshold="600" replaceNullWithZero="true" roundingAccuracy="0" summaryLabel=""/>
+    <xt:node name="customer" singleNodeId="9bcde312">
+      <xt:property type="NodeExpansion" expandOn="customer"/>
+      <xt:property type="ReportPreferences" defaultMode="lst"/>
+      <xt:property type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+      <xt:formula formulaId="util.ChildCount">
+        <xt:result name="Domain Count" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="math.spatial.Sum">
+        <xt:setting name="aggregation" value="DEFAULT"/>
+        <xt:setting name="partial" value="false"/>
+        <xt:parameter name="metric" type="ResultFormulaParameterDefinition" result="Project Count"/>
+        <xt:result name="Project Count" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:node name="domainnm" singleNodeId="fc885baf">
+        <xt:property type="NodeExpansion" expandOn="domainnm"/>
+        <xt:property type="ReportPreferences" defaultMode="lst"/>
+        <xt:property type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+        <xt:formula formulaId="util.ChildCount">
+          <xt:result name="Project Count" default="false" graphable="false"/>
+        </xt:formula>
+        <xt:node name="projname" singleNodeId="6cbdc9e7">
+          <xt:property type="NodeExpansion" expandOn="projname"/>
+          <xt:property type="ReportPreferences" defaultMode="lst"/>
+        </xt:node>
+      </xt:node>
+    </xt:node>
+  </xt:node>
+ 
+  <xt:node name="Flavors" order="5" singleNodeId="3e5c56a6">
+    <xt:property type="NodeFilter" filterExpression="parttype=='Flavor'"/>
+    <xt:property type="ReportPreferences" displayMode="2" duration="l1M" preferredPeriod="3600" paging="5"/>
+    <xt:property type="DisplayPreferences" propagateTimeSelection="true"/>
+    <xt:property type="NodePropertyNodeColumn" name="Flavor" sortMode="asc#1" nodeProperty="name"/>
+    <xt:property type="PropertyNodeColumn" name="vCPUs" property="vcpus"/>
+    <xt:property type="ValueNodeColumn" name="Memory" resultName="ram" forcePeriod="never" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::MB::Byte::Storage" summaryLabel=""/>
+    <xt:property type="ValueNodeColumn" name="Boot Disk Size" resultName="rtdiskgb" forcePeriod="never" useTimeRange="true" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage" summaryLabel=""/>
+    <xt:property type="ValueNodeColumn" name="Ephemeral Disk Size" resultName="ephdskgb" forcePeriod="never" useTimeRange="true" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage" summaryLabel=""/>
+    <xt:property type="PropertyNodeColumn" name="Is Public?" property="ispublic"/>
+    <xt:property type="ValueNodeColumn" name="Instances" sortMode="desc" resultName="instCount" period="86400" forcePeriod="true" useTimeRange="true" formatter="SparkLineFormatter" roundingAccuracy="0" summaryLabel=""/>
+    <xt:property type="ValueNodeColumn" name="Running Instances" resultName="instCountRunning" period="86400" forcePeriod="true" useTimeRange="true" formatter="SparkLineFormatter" roundingAccuracy="0" summaryLabel=""/>
+    <xt:property type="PropertyNodeColumn" name="OpenStack" property="osendpt"/>
+    <xt:report-layout hspan="*:{MNR-DASHBOARD-CAPACITY-FLAVORS-GENERIC-OPENSTACK}-639b4c69-3ce17e44=2,*:{MNR-DASHBOARD-CAPACITY-FLAVORS-GENERIC-OPENSTACK}-639b4c69-da1fbfda=1,*:#MNR-DASHBOARD-CAPACITY-FLAVORS-GENERIC-OPENSTACK=2"/>
+    <xt:node name="part" singleNodeId="639b4c69">
+      <xt:property type="NodeExpansion" expandOn="part,partid&lt;type=hide&gt;,keystid&lt;type=hide&gt;"/>
+      <xt:property type="ReportPreferences" defaultMode="mix" duration="l1M" preferredPeriod="3600"/>
+      <xt:property type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+      <xt:formula formulaId="util.ConditionalValue">
+        <xt:setting name="OperatorIndicator" value="&gt;"/>
+        <xt:setting name="ValueIndicator" value="0"/>
+        <xt:setting name="ReplaceEmpty" value="0"/>
+        <xt:parameter name="Indicator1" type="ResultFormulaParameterDefinition" result="instCount"/>
+        <xt:parameter name="Indicator2" type="EmptyFormulaParameterDefinition"/>
+        <xt:result name="instCount" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.ConditionalValue">
+        <xt:setting name="OperatorIndicator" value="&gt;"/>
+        <xt:setting name="ValueIndicator" value="0"/>
+        <xt:setting name="ReplaceEmpty" value="0"/>
+        <xt:parameter name="Indicator1" type="ResultFormulaParameterDefinition" result="instCountRunning"/>
+        <xt:parameter name="Indicator2" type="EmptyFormulaParameterDefinition"/>
+        <xt:result name="instCountRunning" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="ram"/>
+        <xt:result name="ram" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="rtdiskgb"/>
+        <xt:result name="rtdiskgb" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:formula formulaId="util.Nop">
+        <xt:parameter name="metric" type="PropertyFormulaParameterDefinition" property="ephdskgb"/>
+        <xt:result name="ephdskgb" default="false" graphable="false"/>
+      </xt:formula>
+      <xt:node name="Instances Over Provisioned" order="0" singleNodeId="72ccd6ca">
+        <xt:property type="NodeExpansion" expandOn="part&lt;type=split;properties=flavname;level-up=2;name-override=Instances Overprovisioned&gt;"/>
+        <xt:property type="ReportPreferences" duration="l1M" preferredPeriod="3600" description="Show instances associated with the selected flavor that are over-provisioned. They are either utilizing less than 50% CPU or less than 50% memory." paging="5"/>
+        <xt:property type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+        <xt:property type="NodePropertyNodeColumn" name="Instance" sortMode="asc" nodeProperty="expandedNames[0]"/>
+        <xt:property type="PropertyNodeColumn" name="Flavor" property="flavname"/>
+        <xt:property type="ValueNodeColumn" name="CPU Utilization (%) - 95th Percentile" resultName="cpuPercentile" forcePeriod="true" useTimeRange="true" showSeverityAbove="CRITICAL" replaceNullWithZero="true" formatter="BasicFormatter" roundingAccuracy="1" summaryLabel="">
+          <xt:threshold severity="CRITICAL" value="0.0"/>
+          <xt:threshold severity="OK" value="50.0"/>
+        </xt:property>
+        <xt:property type="ValueNodeColumn" name="Memory Utilization (%)" filterExpression="name=='RssMemory'" forcePeriod="never" useTimeRange="true" showSeverityAbove="CRITICAL" replaceNullWithZero="true" formatter="SparkLineFormatter" roundingAccuracy="1" summaryLabel="">
+          <xt:threshold severity="CRITICAL" value="0.0"/>
+          <xt:threshold severity="OK" value="50.0"/>
+        </xt:property>
+        <xt:node name="device" singleNodeId="8f968b77">
+          <xt:property type="NodeFilter" filterExpression="devtype=='VirtualMachine'"/>
+          <xt:property type="NodeExpansion" expandOn="device"/>
+          <xt:property type="ReportPreferences" defaultMode="lst" duration="l1M" preferredPeriod="3600"/>
+          <xt:property type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+          <xt:formula formulaId="util.SimpleConditionalValue">
+            <xt:setting name="Operator" value="'=='"/>
+            <xt:setting name="Value" value="1"/>
+            <xt:parameter name="Indicator" type="PropertyFormulaParameterDefinition" property="pwrstate"/>
+            <xt:result name="instCountRunning" default="false" graphable="false"/>
+          </xt:formula>
+        </xt:node>
+      </xt:node>
+      <xt:node name="Instances Over Used" order="1" singleNodeId="da1fbfda">
+        <xt:property type="NodeExpansion" expandOn="part&lt;type=split;properties=flavname;level-up=2;name-override=Instances Overused&gt;"/>
+        <xt:property type="ReportPreferences" duration="l1M" preferredPeriod="3600" description="Show instances associated with the selected flavor that are overused. They are either utilizing more than 90% CPU or more than 90% memory." paging="5"/>
+        <xt:property type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+        <xt:property type="NodePropertyNodeColumn" name="Instance" sortMode="asc" nodeProperty="expandedNames[0]"/>
+        <xt:property type="PropertyNodeColumn" name="Flavor" property="flavname"/>
+        <xt:property type="ValueNodeColumn" name="CPU Utilization (%) - 95th Percentile" resultName="cpuPercentile" forcePeriod="true" useTimeRange="true" showSeverityAbove="CRITICAL" replaceNullWithZero="true" formatter="BasicFormatter" roundingAccuracy="1" summaryLabel="">
+          <xt:threshold severity="OK" value="-Infinity"/>
+          <xt:threshold severity="CRITICAL" value="90.0"/>
+        </xt:property>
+        <xt:property type="ValueNodeColumn" name="Memory Utilization (%)" filterExpression="name=='RssMemory'" forcePeriod="never" useTimeRange="true" showSeverityAbove="CRITICAL" replaceNullWithZero="true" formatter="SparkLineFormatter" roundingAccuracy="1" summaryLabel="">
+          <xt:threshold severity="CRITICAL" value="90.0"/>
+        </xt:property>
+        <xt:node name="device" singleNodeId="21159923">
+          <xt:property type="NodeFilter" filterExpression="devtype=='VirtualMachine'"/>
+          <xt:property type="NodeExpansion" expandOn="device"/>
+          <xt:property type="ReportPreferences" defaultMode="lst" duration="l1M" preferredPeriod="3600"/>
+          <xt:property type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+          <xt:formula formulaId="util.SimpleConditionalValue">
+            <xt:setting name="Operator" value="'=='"/>
+            <xt:setting name="Value" value="1"/>
+            <xt:parameter name="Indicator" type="PropertyFormulaParameterDefinition" property="pwrstate"/>
+            <xt:result name="instCountRunning" default="false" graphable="false"/>
+          </xt:formula>
+        </xt:node>
+      </xt:node>
+      <xt:node name="Instance" singleNodeId="3ce17e44">
+        <xt:property type="NodeExpansion" expandOn="part&lt;type=split;properties=flavname;level-up=2;name-override=Instances&gt;"/>
+        <xt:property type="ReportPreferences" duration="l1M" preferredPeriod="3600" description="Show instances associated with the selected flavor." paging="5"/>
+        <xt:property type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+        <xt:property type="NodePropertyNodeColumn" name="Instance" sortMode="asc" nodeProperty="expandedNames[0]"/>
+        <xt:property type="ValueNodeColumn" name="Power State" resultName="pwrstate" forcePeriod="true" useTimeRange="true" formatter="ValueToStringFormatter&lt;key_7.0=SUSPENDED;key_6.0=CRASHED;key_9.0=BUILDING;key_8.0=FAILED;key_1.0=RUNNING;key_0.0=NOSTATE;key_3.0=PAUSED;key_2.0=BLOCKED;key_5.0=SHUTOFF;key_4.0=SHUTDOWN&gt;" roundingAccuracy="-1" summaryLabel=""/>
+        <xt:property type="PropertyNodeColumn" name="Status" property="status"/>
+        <xt:property type="PropertyNodeColumn" name="Compute Node" property="hypervsr"/>
+        <xt:property type="PropertyNodeColumn" name="Project" property="projname"/>
+        <xt:property type="ValueNodeColumn" name="CPU Utilization (%) - Average" filterExpression="name=='CurrentUtilization'" forcePeriod="never" useTimeRange="true" replaceNullWithZero="true" formatter="SparkLineFormatter" roundingAccuracy="1" summaryLabel="">
+          <xt:threshold severity="CRITICAL" value="-Infinity"/>
+          <xt:threshold severity="OK" value="0.0"/>
+          <xt:threshold severity="MAJOR" value="50.0"/>
+          <xt:threshold severity="CRITICAL" value="90.0"/>
+        </xt:property>
+        <xt:property type="ValueNodeColumn" name="CPU Utilization (%) - Maximum" filterExpression="name=='CurrentUtilization'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="max" replaceNullWithZero="true" formatter="SparkLineFormatter" roundingAccuracy="1" summaryLabel="">
+          <xt:threshold severity="CRITICAL" value="-Infinity"/>
+          <xt:threshold severity="OK" value="0.0"/>
+          <xt:threshold severity="MAJOR" value="50.0"/>
+          <xt:threshold severity="CRITICAL" value="90.0"/>
+        </xt:property>
+        <xt:property type="ValueNodeColumn" name="CPU Utilization (%) - 95th Percentile" resultName="cpuPercentile" forcePeriod="true" useTimeRange="true" replaceNullWithZero="true" formatter="BasicFormatter" roundingAccuracy="1" summaryLabel="">
+          <xt:threshold severity="CRITICAL" value="-Infinity"/>
+          <xt:threshold severity="OK" value="0.0"/>
+          <xt:threshold severity="MAJOR" value="50.0"/>
+          <xt:threshold severity="CRITICAL" value="90.0"/>
+        </xt:property>
+        <xt:property type="ValueNodeColumn" name="Memory Used - Average" filterExpression="name=='RssMemory'" forcePeriod="never" useTimeRange="true" replaceNullWithZero="true" formatter="SparkLineFormatter" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::MB::Byte::Storage" summaryLabel=""/>
+        <xt:property type="ValueNodeColumn" name="Memory Used - Maximum" filterExpression="name=='RssMemory'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="max" replaceNullWithZero="true" formatter="SparkLineFormatter" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::MB::Byte::Storage" summaryLabel=""/>
+        <xt:property type="ValueNodeColumn" name="Memory Used - 95th Percentile" resultName="memPercentile" forcePeriod="true" useTimeRange="true" replaceNullWithZero="true" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::MB::Byte::Storage" summaryLabel=""/>
+        <xt:formula formulaId="util.ChildCount">
+          <xt:result name="instCount" default="false" graphable="false"/>
+        </xt:formula>
+        <xt:formula formulaId="math.spatial.Sum">
+          <xt:setting name="aggregation" value="DEFAULT"/>
+          <xt:setting name="partial" value="false"/>
+          <xt:parameter name="metric" type="ResultFormulaParameterDefinition" result="instCountRunning"/>
+          <xt:result name="instCountRunning" default="false" graphable="false"/>
+        </xt:formula>
+        <xt:node name="device" singleNodeId="2d0f137a">
+          <xt:property type="NodeFilter" filterExpression="devtype=='VirtualMachine'"/>
+          <xt:property type="NodeExpansion" expandOn="device"/>
+          <xt:property type="ReportPreferences" defaultMode="lst" duration="l1M" preferredPeriod="3600"/>
+          <xt:property type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+          <xt:formula formulaId="util.SimpleConditionalValue">
+            <xt:setting name="Operator" value="'=='"/>
+            <xt:setting name="Value" value="1"/>
+            <xt:parameter name="Indicator" type="PropertyFormulaParameterDefinition" property="pwrstate"/>
+            <xt:result name="instCountRunning" default="false" graphable="false"/>
+          </xt:formula>
+        </xt:node>
+      </xt:node>
+    </xt:node>
+  </xt:node>
+
+  </xt:node>
+
+      </rep:getReport>
+   </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,226 @@
+{
+	"definitions": 
+	{
+		"property": 
+		{
+			"additionalProperties": 
+			{
+				"required": 
+				[
+					"title",
+					"type"
+				],
+
+				"type": "object",
+				"properties": 
+				{
+					"additionalItems": 
+					{
+						"type": "boolean"
+					},
+
+					"enum": 
+					{
+						"type": "array"
+					},
+
+					"name": 
+					{
+						"type": "string"
+					},
+
+					"title": 
+					{
+						"type": "string"
+					},
+
+					"default": 
+					{
+						
+					},
+
+					"minLength": 
+					{
+						"$ref": "#/definitions/positiveIntegerDefault0"
+					},
+
+					"required": 
+					{
+						"$ref": "#/definitions/stringArray"
+					},
+
+					"maximum": 
+					{
+						"type": "number"
+					},
+
+					"minItems": 
+					{
+						"$ref": "#/definitions/positiveIntegerDefault0"
+					},
+
+					"readonly": 
+					{
+						"type": "boolean"
+					},
+
+					"minimum": 
+					{
+						"type": "number"
+					},
+
+					"maxItems": 
+					{
+						"$ref": "#/definitions/positiveInteger"
+					},
+
+					"maxLength": 
+					{
+						"$ref": "#/definitions/positiveInteger"
+					},
+
+					"uniqueItems": 
+					{
+						"default": false,
+						"type": "boolean"
+					},
+
+					"pattern": 
+					{
+						"type": "string",
+						"format": "regex"
+					},
+
+					"items": 
+					{
+						"type": "object",
+						"properties": 
+						{
+							"enum": 
+							{
+								"type": "array"
+							},
+
+							"type": 
+							{
+								"enum": 
+								[
+									"array",
+									"boolean",
+									"integer",
+									"number",
+									"object",
+									"string",
+									null
+								],
+
+								"type": "string"
+							}
+						}
+					},
+
+					"type": 
+					{
+						"enum": 
+						[
+							"array",
+							"boolean",
+							"integer",
+							"number",
+							"object",
+							"string",
+							null
+						],
+
+						"type": "string"
+					},
+
+					"description": 
+					{
+						"type": "string"
+					}
+				}
+			},
+
+			"type": "object"
+		},
+
+		"positiveIntegerDefault0": 
+		{
+			"allOf": 
+			[
+				{
+					"$ref": "#/definitions/positiveInteger"
+				},
+
+				{
+					"default": 0
+				}
+			]
+		},
+
+		"stringArray": 
+		{
+			"uniqueItems": true,
+			"items": 
+			{
+				"type": "string"
+			},
+
+			"type": "array"
+		},
+
+		"positiveInteger": 
+		{
+			"minimum": 0,
+			"type": "integer"
+		}
+	},
+
+	"name": "objects",
+	"links": 
+	[
+		{
+			"href": "{first}",
+			"rel": "first"
+		},
+
+		{
+			"href": "{next}",
+			"rel": "next"
+		},
+
+		{
+			"href": "{schema}",
+			"rel": "describedby"
+		}
+	],
+
+	"properties": 
+	{
+		"next": 
+		{
+			"type": "string"
+		},
+
+		"schema": 
+		{
+			"type": "string"
+		},
+
+		"objects": 
+		{
+			"items": 
+			{
+				"$ref": "object.json"
+			},
+
+			"type": "array"
+		},
+
+		"first": 
+		{
+			"type": "string"
+		}
+	}
+}

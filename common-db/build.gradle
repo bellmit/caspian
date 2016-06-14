@@ -1,0 +1,8 @@
+apply plugin: 'docker'
+
+docker.images {
+    commonDb {
+        imageName = "${ccscommondb}"
+        dir = project.file('src/main/docker')
+    }
+}

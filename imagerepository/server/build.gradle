@@ -1,0 +1,11 @@
+apply plugin:'application'
+mainClassName = 'com.emc.caspian.ccs.imagerepo.Main'
+applicationDefaultJvmArgs = ["-Dlog4j.configuration=log4j.properties"]
+
+dependencies {
+	compile project(':imagerepository:api')
+	compile project(':imagerepository:registry')
+	compile project(':imagerepository:imageStore')
+    compile project(':imagerepository:taskengine')
+    compile project(':common:policy')
+}

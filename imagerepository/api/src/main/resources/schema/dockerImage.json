@@ -1,0 +1,98 @@
+{
+	"name": "dockerImage",
+	"links": 
+	[
+		{
+			"href": "{first}",
+			"rel": "first"
+		},
+
+		{
+			"href": "{next}",
+			"rel": "next"
+		},
+
+		{
+			"href": "{schema}",
+			"rel": "describedby"
+		}
+	],
+
+	"properties": 
+	{
+	
+		"id": 
+		{
+			"pattern": "^([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}$",
+			"type": "string",
+			"description": "An identifier for the image"
+		},
+
+		"parentId": 
+		{
+			"type": "string"
+		},
+
+		"size": 
+		{
+			"type": 
+			[
+				"null",
+				"integer"
+			],
+
+			"description": "Size of image file in bytes (READ-ONLY)"
+		},
+		
+		"mirrors": 
+		{		
+			"items": 
+			{
+				"type": "string",
+				"maxLength": 255
+			},
+
+			"type": "array",
+			"description": "A set of URLs of all the locations the image resides within the cluster"
+		},
+		
+		"dockerImageLocation":
+		{
+                "type": "object",
+				"properties": 
+				{
+					"url": 
+					{
+						"type": "string",
+						"maxLength": 255
+					},
+
+					"metadata": 
+					{
+						"type": "object"
+					}
+				},
+				"description": "URRL location of image file kept in external store"
+		},
+		
+		"metaDataFilePath":
+		{
+                "type": "object",
+				"properties": 
+				{
+					"url": 
+					{
+						"type": "string",
+						"maxLength": 255
+					},
+
+					"metadata": 
+					{
+						"type": "object"
+					}
+				},
+				"description": "URL location of the image metadata file"
+		}
+		
+	}
+}

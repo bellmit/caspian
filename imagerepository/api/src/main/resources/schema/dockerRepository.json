@@ -1,0 +1,46 @@
+{
+	"name": "dockerRepository",
+	"links": 
+	[
+		{
+			"href": "{first}",
+			"rel": "first"
+		},
+
+		{
+			"href": "{next}",
+			"rel": "next"
+		},
+
+		{
+			"href": "{schema}",
+			"rel": "describedby"
+		}
+	],
+
+	"properties": 
+	{
+	
+		"name": 
+		{
+			"type": 
+			[
+				"null",
+				"string"
+			],
+
+			"description": "Unique name for the repository",
+			"maxLength": 255
+		},
+
+		"imageTagsMap": 
+		{
+			"items": 
+			{
+				"$ref": "imageTagsMapEntry.json"
+			},
+
+			"type": "array"
+		}
+	}
+}

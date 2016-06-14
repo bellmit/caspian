@@ -1,0 +1,52 @@
+Caspian Common Services team is responsible for developing and delivering some of the binaries for Caspian release.
+This team requires a separate source code repository for their sccm activities.
+
+** Folder Hireachy
+
+parent
+    | -- common         # common utilities which can be used across different services
+    | -- keystone       # keystone specific libraries
+    | -- account        # Account service implementation
+    | -- identity       # identity service
+    | -- db             # the database for the different services
+    | -- etcd           # etcd based on SLES12
+
+** Gradle commands
+* './gradlew jar' builds the jar artifacts.
+
+* './gradlew installApp' builds the server application with dependencies and startup scripts.
+    Location of the built artefact is
+
+* './gradlew dockerBuild' builds the docker images for the supported services
+
+## Versioning
+
+When updating version numbers for release branches, the following files need modification:
+
+**gradle.properties**
+ 
+  * `baseVersion` - controls the base version of the images and artifacts
+  * `latestName` - controls the tag name used for 'latest' images
+
+## Configuring a Jenkins Job
+
+**Execute shell**
+  
+```
+# Define any extra gradle tasks and switches in build.env (example below)
+cat <<EOF > ${WORKSPACE}/jenkins/build.env
+EXTRA_GRADLE_TASKS="dockerPushAll publish"
+EXTRA_GRADLE_SWITCHES="-PpublishUrl=build/publish -PdockerRegistry=<registry>"
+EOF
+
+${WORKSPACE}/jenkins/build.sh
+```
+
+**Inject environment** *(loads the version property to be used in the build description)*
+
+* Properties File Path: `build/version.properties`
+
+**Set Build Description**
+
+* Description: `${version}`
+

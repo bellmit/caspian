@@ -1,0 +1,8 @@
+dependencies {
+    compile 'com.amazonaws:aws-java-sdk:1.0.002'
+    compile 'com.amazonaws:aws-java-sdk:1.7.5'
+    compile 'org.apache.httpcomponents:httpasyncclient:4.0.2' 
+    testCompile 'org.mockito:mockito-core:1.+'
+}
+
+

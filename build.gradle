@@ -1,0 +1,73 @@
+buildscript {
+    repositories {
+        maven {
+            name "artifactory"
+            url artifactoryUrl
+        }
+    }
+    dependencies {
+        classpath "com.emc.caspian:gradle-plugins:${pluginsVersion}"
+    }
+}
+
+apply plugin: 'caspian-base'
+logger.quiet("Building Version: ${version}")
+
+allprojects {
+    apply from: "${rootDir}/version.gradle"
+    
+    repositories {
+        maven {
+            name "artifactory"
+            url artifactoryUrl
+        }
+    }
+    
+    group = 'com.emc.caspian.ccs'
+    // Adds the parent project names to the group
+    def parts = path.split(':').drop(1)
+    for (int i = 0; i < parts.length -1; i++) {
+        group += ".${parts[i]}"
+    }
+
+    // Converts the project path to a hyphen separated name
+    def normalizedName = project.path.substring(1).replace(':', '-')    
+    eclipse.project {
+        name = normalizedName
+    }
+    plugins.withType(JavaPlugin) {
+        project.archivesBaseName = normalizedName
+        project.jar {
+            manifest.attributes provider: 'EMC'
+        }
+    }
+    plugins.withId('docker') {
+        project.docker {
+            executable = dockerExecutable
+            registry = dockerRegistry
+            repository = dockerRepo
+            latestVersion = latestName
+        }
+        tasks.withType(DockerPush) {
+            onlyIf { dockerRegistry }
+        }
+    }
+}
+
+task removeContainers(type: Exec) {
+    commandLine "/bin/bash", "-c", "${dockerExecutable} rm -f \$(${dockerExecutable} ps -a -q)"
+    ignoreExitValue = true
+    onlyIf { file(dockerExecutable).isFile() }
+}
+
+task cleanImages(type: Exec) {
+    commandLine "/bin/bash", "-c", "${dockerExecutable} rmi -f \$(${dockerExecutable} images -q|uniq|grep -v 6be484904699)"
+    ignoreExitValue = true
+    onlyIf { file(dockerExecutable).isFile() }
+}
+
+apply plugin: 'fortify'
+fortify {
+    executable = fortifyExecutable
+    buildId = fortifyBuildId
+}

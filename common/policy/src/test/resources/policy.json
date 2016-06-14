@@ -1,0 +1,63 @@
+{
+    "context_is_admin":  "role:admin",
+    "context_is_member": "not role:accounting and not role:operator",
+    "context_is_specialMember": "role:accounting",
+    "context_is_nested1": "rule:context_is_nested",
+    "context_is_nested" : "not rule:context_is_specialMember",
+  
+    "default": "",
+
+    "add_image": "is_admin:True or rule:context_is_specialMember",
+    "delete_image": "rule:context_is_admin",
+    "get_image": "role:accounting",
+    "get_images": "not role:accounting",
+    "modify_image": " ( rule:context_is_specialMember ) or role:admin ",
+    "publicize_image": "role:admin",
+    "copy_from": "rule:context_is_specialMember or role:admin",
+
+    "download_image": "",
+    "upload_image": "",
+
+    "delete_image_location": "",
+    "get_image_location": "",
+    "set_image_location": "",
+
+    "add_member": "rule:context_is_nested1",
+    "delete_member": "",
+    "get_member": "",
+    "get_members": "",
+    "modify_member": "",
+
+    "manage_image_cache": "role:admin",
+
+    "get_task": "",
+    "get_tasks": "",
+    "add_task": "",
+    "modify_task": "",
+
+    "get_metadef_namespace": "",
+    "get_metadef_namespaces":"",
+    "modify_metadef_namespace":"",
+    "add_metadef_namespace":"",
+
+    "get_metadef_object":"",
+    "get_metadef_objects":"",
+    "modify_metadef_object":"",
+    "add_metadef_object":"",
+
+    "list_metadef_resource_types":"",
+    "get_metadef_resource_type":"",
+    "add_metadef_resource_type_association":"",
+
+    "get_metadef_property":"",
+    "get_metadef_properties":"",
+    "modify_metadef_property":"",
+    "add_metadef_property":"",
+
+    "get_metadef_tag":"",
+    "get_metadef_tags":"",
+    "modify_metadef_tag":"",
+    "add_metadef_tag":"",
+    "add_metadef_tags":""
+
+}

@@ -1,0 +1,48 @@
+{
+	"name": "images",
+	"links": 
+	[
+		{
+			"href": "{first}",
+			"rel": "first"
+		},
+
+		{
+			"href": "{next}",
+			"rel": "next"
+		},
+
+		{
+			"href": "{schema}",
+			"rel": "describedby"
+		}
+	],
+
+	"properties": 
+	{
+		"images": 
+		{
+			"items": 
+			{
+				"$ref": "image.json"
+			},
+
+			"type": "array"
+		},
+
+		"schema": 
+		{
+			"type": "string"
+		},
+
+		"next": 
+		{
+			"type": "string"
+		},
+
+		"first": 
+		{
+			"type": "string"
+		}
+	}
+}

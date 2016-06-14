@@ -1,0 +1,30 @@
+apply plugin:'application'
+mainClassName = 'com.emc.caspian.ccs.esrs.server.controller.Main'
+applicationDefaultJvmArgs = ["-Dlog4j.configuration=log4j.properties", "-Xms128m", "-Xmx512m"]
+
+dependencies {
+    compile project(':esrs:api')
+    compile project(':esrs:model')
+    compile "org.json:json:20150729"
+    compile "org.eclipse.jetty:jetty-server:${project.ext.version.jetty}"
+    compile "org.eclipse.jetty:jetty-servlet:${project.ext.version.jetty}"
+    compile "org.eclipse.jetty:jetty-xml:${project.ext.version.jetty}"
+    compile "org.glassfish.jersey.core:jersey-server:${project.ext.version.jersey}"
+    compile "org.glassfish.jersey.core:jersey-client:${project.ext.version.jersey}"
+    compile "org.glassfish.jersey.containers:jersey-container-servlet-core:${project.ext.version.jersey}"
+    compile "com.emc.caspian:component-registry-client:${project.ext.version.componentregistryclient}"
+    compile "org.slf4j:slf4j-api:${project.ext.version.slf4j}"
+    compile "org.slf4j:slf4j-log4j12:${project.ext.version.slf4j}"
+    compile "log4j:log4j:${project.ext.version.log4j}"
+    compile "com.emc.caspian.encryption:encryption-java:${project.ext.version.encryptionjava}"
+}
+
+apply plugin: 'docker'
+
+docker.images {
+    esrs {
+        imageName = "${ccsesrs}"
+        dir = project.projectDir
+    }
+}
+buildEsrsImage.dependsOn { installApp }

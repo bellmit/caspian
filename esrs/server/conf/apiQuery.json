@@ -1,0 +1,1 @@
+{ "size": 0, "aggs": { "2": { "terms": { "field": "parttype.raw", "size": 100, "order": { "_count": "desc" } } } }, "query": { "filtered": { "query": { "query_string": { "query": "devtype:cloudcompute and verb:* and API", "analyze_wildcard": true } } } } }

@@ -1,0 +1,6 @@
+{
+  "CronJobs" :[
+             { "Job" : { "name" : "Elasticsearch index purging job" , "properties" : { "type" : "command-executor", "command" : "ES_INDEX_PURGE_SCRIPT" } , "timer" : "00 30 00 * * *" }},
+             { "Job" : { "name" : "Elasticsearch short lived index purging job" , "properties" : { "type" : "command-executor", "command" : "ES_SHORTLIVED_INDEX_PURGE_SCRIPT" } , "timer" : "00 05 00 * * *" }}
+            ]
+}

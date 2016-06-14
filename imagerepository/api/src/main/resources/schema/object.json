@@ -1,0 +1,233 @@
+{
+	"additionalProperties": false,
+	"definitions": 
+	{
+		"property": 
+		{
+			"additionalProperties": 
+			{
+				"required": 
+				[
+					"title",
+					"type"
+				],
+
+				"type": "object",
+				"properties": 
+				{
+					"additionalItems": 
+					{
+						"type": "boolean"
+					},
+
+					"enum": 
+					{
+						"type": "array"
+					},
+
+					"name": 
+					{
+						"type": "string"
+					},
+
+					"title": 
+					{
+						"type": "string"
+					},
+
+					"default": 
+					{
+						
+					},
+
+					"minLength": 
+					{
+						"$ref": "#/definitions/positiveIntegerDefault0"
+					},
+
+					"required": 
+					{
+						"$ref": "#/definitions/stringArray"
+					},
+
+					"maximum": 
+					{
+						"type": "number"
+					},
+
+					"minItems": 
+					{
+						"$ref": "#/definitions/positiveIntegerDefault0"
+					},
+
+					"readonly": 
+					{
+						"type": "boolean"
+					},
+
+					"minimum": 
+					{
+						"type": "number"
+					},
+
+					"maxItems": 
+					{
+						"$ref": "#/definitions/positiveInteger"
+					},
+
+					"maxLength": 
+					{
+						"$ref": "#/definitions/positiveInteger"
+					},
+
+					"uniqueItems": 
+					{
+						"default": false,
+						"type": "boolean"
+					},
+
+					"pattern": 
+					{
+						"type": "string",
+						"format": "regex"
+					},
+
+					"items": 
+					{
+						"type": "object",
+						"properties": 
+						{
+							"enum": 
+							{
+								"type": "array"
+							},
+
+							"type": 
+							{
+								"enum": 
+								[
+									"array",
+									"boolean",
+									"integer",
+									"number",
+									"object",
+									"string",
+									null
+								],
+
+								"type": "string"
+							}
+						}
+					},
+
+					"type": 
+					{
+						"enum": 
+						[
+							"array",
+							"boolean",
+							"integer",
+							"number",
+							"object",
+							"string",
+							null
+						],
+
+						"type": "string"
+					},
+
+					"description": 
+					{
+						"type": "string"
+					}
+				}
+			},
+
+			"type": "object"
+		},
+
+		"positiveIntegerDefault0": 
+		{
+			"allOf": 
+			[
+				{
+					"$ref": "#/definitions/positiveInteger"
+				},
+
+				{
+					"default": 0
+				}
+			]
+		},
+
+		"stringArray": 
+		{
+			"uniqueItems": true,
+			"items": 
+			{
+				"type": "string"
+			},
+
+			"type": "array"
+		},
+
+		"positiveInteger": 
+		{
+			"minimum": 0,
+			"type": "integer"
+		}
+	},
+
+	"required": 
+	[
+		"name"
+	],
+
+	"name": "object",
+	"properties": 
+	{
+		"created_at": 
+		{
+			"type": "string",
+			"description": "Date and time of object creation (READ-ONLY)",
+			"format": "date-time"
+		},
+
+		"schema": 
+		{
+			"type": "string"
+		},
+
+		"name": 
+		{
+			"type": "string"
+		},
+
+		"updated_at": 
+		{
+			"type": "string",
+			"description": "Date and time of the last object modification (READ-ONLY)",
+			"format": "date-time"
+		},
+
+		"self": 
+		{
+			"type": "string"
+		},
+
+		"required": 
+		{
+			"$ref": "#/definitions/stringArray"
+		},
+
+		"properties": 
+		{
+			"$ref": "#/definitions/property"
+		},
+
+		"description": 
+		{
+			"type": "string"
+		}
+	}
+}
